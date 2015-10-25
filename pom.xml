@@ -44,6 +44,7 @@
     <activemq-version>5.12.1</activemq-version>
     <jetty-version>8.1.15.v20140411</jetty-version>
     <mockito-version>1.10.19</mockito-version>
+    <reflections-version>0.9.10</reflections-version>
 
     <!-- Maven Plugin Version for this Project -->
     <maven-surefire-plugin-version>2.18.1</maven-surefire-plugin-version>
@@ -136,6 +137,11 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+          <groupId>org.reflections</groupId>
+          <artifactId>reflections</artifactId>
+          <version>${reflections-version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
         <artifactId>geronimo-jms_1.1_spec</artifactId>

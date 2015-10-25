@@ -14,24 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.activemq.openwire.annotations;
+package org.apache.activemq.openwire.gen;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Defines the annotation value to use to describe a
+ * Contains the registry of known OpenWire type names.
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface OpenWireCommandProperty {
+public final class OpenWireTypesRegistry {
 
-    String name();
+    private static final List<String> commandNames;
+    static {
+        commandNames = new ArrayList<String>();
 
-    int introduced() default 1;
+        // Register all OpenWire types Here.
+        commandNames.add("BrokerId");
+        commandNames.add("BrokerInfo");
+        commandNames.add("ConnectionControl");
+        commandNames.add("ConnectionError");
+    }
 
-    boolean marshaled() default true;
+    private OpenWireTypesRegistry() {}
 
+    public static List<String> getCommandNames() {
+        return commandNames;
+    }
 }

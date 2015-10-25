@@ -21,12 +21,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Defines the annotation value to use to describe a
+ */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface OpenWireCommand {
+@Target({ElementType.FIELD})
+public @interface OpenWireTypeProperty {
 
     String name();
 
     int introduced() default 1;
+
+    boolean marshaled() default true;
 
 }
