@@ -30,6 +30,8 @@ public @interface OpenWireTypeProperty {
 
     int introduced() default 1;
 
+    boolean cached() default false;
+
     boolean marshaled() default true;
 
 }
