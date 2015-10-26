@@ -16,10 +16,13 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="111"
  *
  */
+@OpenWireType(typeCode = 111)
 public class LocalTransactionId extends TransactionId implements Comparable<LocalTransactionId> {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_LOCAL_TRANSACTION_ID;

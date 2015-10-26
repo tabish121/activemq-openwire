@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="3"
  */
+@OpenWireType(typeCode = 3)
 public class ConnectionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_INFO;

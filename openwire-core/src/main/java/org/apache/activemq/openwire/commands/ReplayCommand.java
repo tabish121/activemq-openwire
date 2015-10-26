@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * A general purpose replay command for some kind of producer where ranges of
  * messages are asked to be replayed. This command is typically used over a
@@ -24,6 +26,7 @@ package org.apache.activemq.openwire.commands;
  *
  * @openwire:marshaller code="65"
  */
+@OpenWireType(typeCode = 65)
 public class ReplayCommand extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REPLAY;

@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="122"
  */
+@OpenWireType(typeCode = 122)
 public class ConsumerId implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_ID;

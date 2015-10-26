@@ -16,11 +16,14 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Used by the Broker to control various aspects of a consumer instance.
  *
  * @openwire:marshaller code="17"
  */
+@OpenWireType(typeCode = 17)
 public class ConsumerControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_CONTROL;

@@ -16,12 +16,15 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Represents a partial command; a large command that has been split up into
  * pieces.
  *
  * @openwire:marshaller code="60"
  */
+@OpenWireType(typeCode = 60)
 public class PartialCommand implements Command {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PARTIAL_COMMAND;

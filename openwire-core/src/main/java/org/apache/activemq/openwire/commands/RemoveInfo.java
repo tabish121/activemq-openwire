@@ -18,11 +18,14 @@ package org.apache.activemq.openwire.commands;
 
 import java.io.IOException;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Removes a consumer, producer, session or connection.
  *
  * @openwire:marshaller code="12"
  */
+@OpenWireType(typeCode = 12)
 public class RemoveInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REMOVE_INFO;

@@ -18,9 +18,12 @@ package org.apache.activemq.openwire.commands;
 
 import java.io.IOException;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="7"
  */
+@OpenWireType(typeCode = 7)
 public class TransactionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.TRANSACTION_INFO;

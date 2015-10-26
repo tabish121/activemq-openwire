@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="4"
  */
+@OpenWireType(typeCode = 4)
 public class SessionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.SESSION_INFO;

@@ -16,12 +16,14 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @openwire:marshaller code="91"
  */
+@OpenWireType(typeCode = 91)
 public class NetworkBridgeFilter implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.NETWORK_BRIDGE_FILTER;

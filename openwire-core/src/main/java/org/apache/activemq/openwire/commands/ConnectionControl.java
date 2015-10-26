@@ -16,12 +16,15 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Used by the Broker to control the connection state, the client should react to
  * this command immediately.
  *
  * @openwire:marshaller code="18"
  */
+@OpenWireType(typeCode = 18)
 public class ConnectionControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_CONTROL;

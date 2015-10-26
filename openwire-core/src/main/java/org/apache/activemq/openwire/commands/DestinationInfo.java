@@ -18,11 +18,14 @@ package org.apache.activemq.openwire.commands;
 
 import java.io.IOException;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Used to create and destroy destinations on the broker.
  *
  * @openwire:marshaller code="8"
  */
+@OpenWireType(typeCode = 8)
 public class DestinationInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DESTINATION_INFO;

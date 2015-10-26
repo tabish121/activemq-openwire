@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="52"
  */
+@OpenWireType(typeCode = 52)
 public class JournalQueueAck implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_REMOVE;

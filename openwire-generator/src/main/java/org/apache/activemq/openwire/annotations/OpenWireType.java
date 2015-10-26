@@ -25,8 +25,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface OpenWireType {
 
-    String name();
-
     int typeCode();
 
     int introduced() default 1;

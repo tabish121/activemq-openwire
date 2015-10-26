@@ -16,11 +16,14 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Used to represent a durable subscription.
  *
  * @openwire:marshaller code="55"
  */
+@OpenWireType(typeCode = 55)
 public class SubscriptionInfo implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DURABLE_SUBSCRIPTION_INFO;

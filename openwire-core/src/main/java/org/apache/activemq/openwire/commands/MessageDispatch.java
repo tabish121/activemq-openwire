@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="21"
  */
+@OpenWireType(typeCode = 21)
 public class MessageDispatch extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_DISPATCH;

@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="53"
  */
+@OpenWireType(typeCode = 53)
 public class JournalTrace implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_TRACE;

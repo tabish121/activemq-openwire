@@ -23,11 +23,14 @@ import java.net.URL;
 
 import javax.jms.JMSException;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * An implementation of ActiveMQ's BlobMessage for out of band BLOB transfer
  *
  * openwire:marshaller code="29"
  */
+@OpenWireType(typeCode = 29)
 public class OpenWireBlobMessage extends OpenWireMessage {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_BLOB_MESSAGE;

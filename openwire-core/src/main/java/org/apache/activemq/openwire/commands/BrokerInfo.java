@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * When a client connects to a broker, the broker send the client a BrokerInfo
  * so that the client knows which broker node he's talking to and also any peers
@@ -24,6 +26,7 @@ package org.apache.activemq.openwire.commands;
  *
  * @openwire:marshaller code="2"
  */
+@OpenWireType(typeCode = 2)
 public class BrokerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.BROKER_INFO;

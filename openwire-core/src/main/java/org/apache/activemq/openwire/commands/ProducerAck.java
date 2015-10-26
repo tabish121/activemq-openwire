@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * A ProducerAck command is sent by a broker to a producer to let it know it has
  * received and processed messages that it has produced. The producer will be
@@ -24,6 +26,7 @@ package org.apache.activemq.openwire.commands;
  *
  * @openwire:marshaller code="19" version="3"
  */
+@OpenWireType(typeCode = 19, introduced = 3)
 public class ProducerAck extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_ACK;

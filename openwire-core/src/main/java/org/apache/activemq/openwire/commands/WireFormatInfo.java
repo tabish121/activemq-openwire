@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.OpenWireMarshallingSupport;
 import org.fusesource.hawtbuf.Buffer;
@@ -34,6 +35,7 @@ import org.fusesource.hawtbuf.UTF8Buffer;
 /**
  * @openwire:marshaller code="1"
  */
+@OpenWireType(typeCode = 1)
 public class WireFormatInfo implements Command, MarshallAware {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.WIREFORMAT_INFO;

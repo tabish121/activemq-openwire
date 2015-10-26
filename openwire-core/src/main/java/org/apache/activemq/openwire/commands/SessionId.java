@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="121"
  */
+@OpenWireType(typeCode = 121)
 public class SessionId implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.SESSION_ID;

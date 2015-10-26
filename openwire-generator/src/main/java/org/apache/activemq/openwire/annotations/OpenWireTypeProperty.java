@@ -28,8 +28,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface OpenWireTypeProperty {
 
-    String name();
-
     int introduced() default 1;
 
     boolean marshaled() default true;

@@ -33,6 +33,7 @@ import javax.jms.TemporaryQueue;
 import javax.jms.TemporaryTopic;
 import javax.jms.Topic;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.apache.activemq.openwire.utils.DefaultUnresolvedDestinationTransformer;
 import org.apache.activemq.openwire.utils.UnresolvedDestinationTransformer;
 
@@ -42,6 +43,7 @@ import org.apache.activemq.openwire.utils.UnresolvedDestinationTransformer;
  *
  * @openwire:marshaller
  */
+@OpenWireType(typeCode = 0)
 public abstract class OpenWireDestination implements Destination, DataStructure, Comparable<OpenWireDestination> {
 
     public static final String PATH_SEPERATOR = ".";

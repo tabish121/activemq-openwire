@@ -16,10 +16,13 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 
 /**
  * @openwire:marshaller code="6"
  */
+@OpenWireType(typeCode = 6)
 public class ProducerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_INFO;

@@ -33,6 +33,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageFormatException;
 import javax.jms.MessageNotWriteableException;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.apache.activemq.openwire.utils.OpenWireMarshallingSupport;
@@ -44,6 +45,7 @@ import org.fusesource.hawtbuf.UTF8Buffer;
 /**
  * openwire:marshaller code="25"
  */
+@OpenWireType(typeCode = 25)
 public class OpenWireMapMessage extends OpenWireMessage {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_MAP_MESSAGE;

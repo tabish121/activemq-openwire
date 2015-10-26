@@ -16,10 +16,13 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="123"
  *
  */
+@OpenWireType(typeCode = 123)
 public class ProducerId implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_ID;

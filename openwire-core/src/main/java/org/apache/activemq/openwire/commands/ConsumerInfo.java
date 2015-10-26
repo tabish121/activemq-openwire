@@ -19,9 +19,12 @@ package org.apache.activemq.openwire.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="5"
  */
+@OpenWireType(typeCode = 5)
 public class ConsumerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_INFO;

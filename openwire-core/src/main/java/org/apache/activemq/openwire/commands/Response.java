@@ -16,9 +16,12 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * @openwire:marshaller code="30"
  */
+@OpenWireType(typeCode = 30)
 public class Response extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.RESPONSE;

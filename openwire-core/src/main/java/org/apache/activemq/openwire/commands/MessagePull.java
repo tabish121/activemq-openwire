@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.commands;
 
+import org.apache.activemq.openwire.annotations.OpenWireType;
+
 /**
  * Used to pull messages on demand, the command can have a time value that indicates
  * how long the Broker keeps the pull request open before returning a MessageDispatch
@@ -23,6 +25,7 @@ package org.apache.activemq.openwire.commands;
  *
  * @openwire:marshaller code="20"
  */
+@OpenWireType(typeCode = 20)
 public class MessagePull extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_PULL;
