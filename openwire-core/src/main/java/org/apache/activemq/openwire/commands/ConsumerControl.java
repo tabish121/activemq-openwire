@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Used by the Broker to control various aspects of a consumer instance.
@@ -28,12 +29,25 @@ public class ConsumerControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_CONTROL;
 
+    @OpenWireTypeProperty
     protected ConsumerId consumerId;
+
+    @OpenWireTypeProperty
     protected boolean close;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean stop;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean start;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean flush;
+
+    @OpenWireTypeProperty
     protected int prefetch;
+
+    @OpenWireTypeProperty(introduced = 6)
     protected OpenWireDestination destination;
 
     /**

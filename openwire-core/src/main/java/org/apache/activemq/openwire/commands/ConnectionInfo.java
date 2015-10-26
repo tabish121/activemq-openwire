@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="3"
@@ -26,16 +27,37 @@ public class ConnectionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_INFO;
 
+    @OpenWireTypeProperty(cached = true)
     protected ConnectionId connectionId;
+
+    @OpenWireTypeProperty
     protected String clientId;
+
+    @OpenWireTypeProperty(introduced = 8)
     protected String clientIp;
+
+    @OpenWireTypeProperty
     protected String userName;
+
+    @OpenWireTypeProperty
     protected String password;
+
+    @OpenWireTypeProperty(cached = true)
     protected BrokerId[] brokerPath;
+
+    @OpenWireTypeProperty
     protected boolean brokerMasterConnector;
+
+    @OpenWireTypeProperty
     protected boolean manageable;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean clientMaster = true;
+
+    @OpenWireTypeProperty(introduced = 6)
     protected boolean faultTolerant = false;
+
+    @OpenWireTypeProperty(introduced = 6)
     protected boolean failoverReconnect;
 
     public ConnectionInfo() {

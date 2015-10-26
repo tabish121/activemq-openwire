@@ -19,6 +19,7 @@ package org.apache.activemq.openwire.commands;
 import java.io.IOException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Used to create and destroy destinations on the broker.
@@ -33,10 +34,19 @@ public class DestinationInfo extends BaseCommand {
     public static final byte ADD_OPERATION_TYPE = 0;
     public static final byte REMOVE_OPERATION_TYPE = 1;
 
+    @OpenWireTypeProperty(cached = true)
     protected ConnectionId connectionId;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty
     protected byte operationType;
+
+    @OpenWireTypeProperty
     protected long timeout;
+
+    @OpenWireTypeProperty
     protected BrokerId[] brokerPath;
 
     public DestinationInfo() {

@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="33"
@@ -26,6 +27,7 @@ public class DataArrayResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DATA_ARRAY_RESPONSE;
 
+    @OpenWireTypeProperty
     DataStructure data[];
 
     public DataArrayResponse() {

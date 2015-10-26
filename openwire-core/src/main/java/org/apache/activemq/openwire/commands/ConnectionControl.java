@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Used by the Broker to control the connection state, the client should react to
@@ -29,14 +30,31 @@ public class ConnectionControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_CONTROL;
 
+    @OpenWireTypeProperty
     protected boolean suspend;
+
+    @OpenWireTypeProperty
     protected boolean resume;
+
+    @OpenWireTypeProperty
     protected boolean close;
+
+    @OpenWireTypeProperty
     protected boolean exit;
+
+    @OpenWireTypeProperty
     protected boolean faultTolerant;
+
+    @OpenWireTypeProperty(introduced = 6)
     protected String connectedBrokers="";
+
+    @OpenWireTypeProperty(introduced = 6)
     protected String reconnectTo = "";
+
+    @OpenWireTypeProperty(introduced = 8)
     protected byte[] token;
+
+    @OpenWireTypeProperty(introduced = 6)
     protected boolean rebalanceConnection;
 
     @Override

@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="31"
@@ -26,6 +27,7 @@ public class ExceptionResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.EXCEPTION_RESPONSE;
 
+    @OpenWireTypeProperty
     Throwable exception;
 
     public ExceptionResponse() {

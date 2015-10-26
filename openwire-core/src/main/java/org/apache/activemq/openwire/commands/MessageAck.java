@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="22"
@@ -67,15 +68,31 @@ public class MessageAck extends BaseCommand {
      */
     public static final byte EXPIRED_ACK_TYPE = 6;
 
+    @OpenWireTypeProperty
     protected byte ackType;
+
+    @OpenWireTypeProperty(cached = true)
     protected ConsumerId consumerId;
+
+    @OpenWireTypeProperty
     protected MessageId firstMessageId;
+
+    @OpenWireTypeProperty
     protected MessageId lastMessageId;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty(cached = true)
     protected TransactionId transactionId;
+
+    @OpenWireTypeProperty
     protected int messageCount;
+
+    @OpenWireTypeProperty(introduced = 7)
     protected Throwable poisonCause;
 
+    @OpenWireTypeProperty(marshaled = false)
     protected transient String consumerKey;
 
     public MessageAck() {

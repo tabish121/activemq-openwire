@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * When a client connects to a broker, the broker send the client a BrokerInfo
@@ -31,17 +32,40 @@ public class BrokerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.BROKER_INFO;
 
+    @OpenWireTypeProperty(cached = true)
     protected BrokerId brokerId;
+
+    @OpenWireTypeProperty
     protected String brokerURL;
+
+    @OpenWireTypeProperty
     protected boolean slaveBroker;
+
+    @OpenWireTypeProperty
     protected boolean masterBroker;
+
+    @OpenWireTypeProperty
     protected boolean faultTolerantConfiguration;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean networkConnection;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected boolean duplexConnection;
+
+    @OpenWireTypeProperty
     protected BrokerInfo peerBrokerInfos[];
+
+    @OpenWireTypeProperty
     protected String brokerName;
+
+    @OpenWireTypeProperty(introduced = 2)
     protected long connectionId;
+
+    @OpenWireTypeProperty(introduced = 3)
     protected String brokerUploadUrl;
+
+    @OpenWireTypeProperty(introduced = 3)
     protected String networkProperties;
 
     public BrokerInfo copy() {

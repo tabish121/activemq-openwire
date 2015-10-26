@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="54"
@@ -32,8 +33,13 @@ public class JournalTransaction implements DataStructure {
     public static final byte LOCAL_COMMIT = 4;
     public static final byte LOCAL_ROLLBACK = 5;
 
+    @OpenWireTypeProperty
     public byte type;
+
+    @OpenWireTypeProperty
     public boolean wasPrepared;
+
+    @OpenWireTypeProperty
     public TransactionId transactionId;
 
     public JournalTransaction(byte type, TransactionId transactionId, boolean wasPrepared) {

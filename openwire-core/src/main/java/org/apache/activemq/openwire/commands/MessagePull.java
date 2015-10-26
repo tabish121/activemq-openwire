@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Used to pull messages on demand, the command can have a time value that indicates
@@ -30,13 +31,29 @@ public class MessagePull extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_PULL;
 
+    @OpenWireTypeProperty(cached = true)
     protected ConsumerId consumerId;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty
     protected long timeout;
+
+    @OpenWireTypeProperty(introduced = 3)
     private MessageId messageId;
+
+    @OpenWireTypeProperty(introduced = 3)
     private String correlationId;
 
+    @OpenWireTypeProperty(marshaled = false)
     private transient boolean tracked = false;
+
+    @OpenWireTypeProperty(marshaled = false)
+    private transient int quantity = 1;
+
+    @OpenWireTypeProperty(marshaled = false)
+    private transient boolean alwaysSignalDone;
 
     @Override
     public byte getDataStructureType() {

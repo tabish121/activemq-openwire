@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="90"
@@ -26,9 +27,16 @@ public class MessageDispatchNotification extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_DISPATCH_NOTIFICATION;
 
+    @OpenWireTypeProperty(cached = true)
     protected ConsumerId consumerId;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty
     protected MessageId messageId;
+
+    @OpenWireTypeProperty
     protected long deliverySequenceId;
 
     @Override

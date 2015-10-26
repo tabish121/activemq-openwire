@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="5"
@@ -34,27 +35,61 @@ public class ConsumerInfo extends BaseCommand {
     public static final byte NETWORK_CONSUMER_PRIORITY = -5;
     public static final byte LOW_PRIORITY = -10;
 
+    @OpenWireTypeProperty(cached = true)
     protected ConsumerId consumerId;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty
     protected int prefetchSize;
+
+    @OpenWireTypeProperty
     protected int maximumPendingMessageLimit;
+
+    @OpenWireTypeProperty
     protected boolean browser;
+
+    @OpenWireTypeProperty
     protected boolean dispatchAsync;
+
+    @OpenWireTypeProperty
     protected String selector;
+
+    @OpenWireTypeProperty(introduced = 10)
     protected String clientId;
+
+    @OpenWireTypeProperty
     protected String subscriptionName;
+
+    @OpenWireTypeProperty
     protected boolean noLocal;
+
+    @OpenWireTypeProperty
     protected boolean exclusive;
+
+    @OpenWireTypeProperty
     protected boolean retroactive;
+
+    @OpenWireTypeProperty
     protected byte priority;
+
+    @OpenWireTypeProperty(cached = true)
     protected BrokerId[] brokerPath;
+
+    @OpenWireTypeProperty
     protected boolean optimizedAcknowledge;
+
+    @OpenWireTypeProperty
     protected boolean noRangeAcks;
 
-    // Network connector values should not be serialized.
-    protected transient boolean networkSubscription;
+    @OpenWireTypeProperty(marshaled = false)
     protected transient List<ConsumerId> networkConsumerIds;
 
+    @OpenWireTypeProperty(marshaled = false)
+    protected transient boolean networkSubscription;
+
+    @OpenWireTypeProperty
     protected Object additionalPredicate;
 
     public ConsumerInfo() {
