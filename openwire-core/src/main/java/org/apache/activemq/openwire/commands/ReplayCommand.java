@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * A general purpose replay command for some kind of producer where ranges of
@@ -31,10 +32,19 @@ public class ReplayCommand extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REPLAY;
 
+    @OpenWireTypeProperty
     private String producerId;
+
+    @OpenWireTypeProperty
     private int firstAckNumber;
+
+    @OpenWireTypeProperty
     private int lastAckNumber;
+
+    @OpenWireTypeProperty
     private int firstNakNumber;
+
+    @OpenWireTypeProperty
     private int lastNakNumber;
 
     public ReplayCommand() {

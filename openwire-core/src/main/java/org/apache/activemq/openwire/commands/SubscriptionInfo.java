@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Used to represent a durable subscription.
@@ -28,11 +29,22 @@ public class SubscriptionInfo implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DURABLE_SUBSCRIPTION_INFO;
 
+    @OpenWireTypeProperty(introduced = 3)
     protected OpenWireDestination subscribedDestination;
+
+    @OpenWireTypeProperty(cached = true)
     protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty
     protected String clientId;
+
+    @OpenWireTypeProperty
     protected String subscriptionName;
+
+    @OpenWireTypeProperty
     protected String selector;
+
+    @OpenWireTypeProperty(introduced = 11)
     protected boolean noLocal;
 
     public SubscriptionInfo() {

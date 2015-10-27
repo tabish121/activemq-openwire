@@ -30,6 +30,7 @@ import java.util.zip.InflaterInputStream;
 import javax.jms.JMSException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.apache.activemq.openwire.utils.ObjectMessageInputStream;
@@ -46,6 +47,7 @@ public class OpenWireObjectMessage extends OpenWireMessage {
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_OBJECT_MESSAGE;
     static final ClassLoader ACTIVEMQ_CLASSLOADER = OpenWireObjectMessage.class.getClassLoader();
 
+    @OpenWireTypeProperty(marshaled = false)
     protected transient Serializable object;
 
     @Override

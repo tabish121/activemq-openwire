@@ -34,6 +34,7 @@ import javax.jms.TemporaryTopic;
 import javax.jms.Topic;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 import org.apache.activemq.openwire.utils.DefaultUnresolvedDestinationTransformer;
 import org.apache.activemq.openwire.utils.UnresolvedDestinationTransformer;
 
@@ -62,12 +63,22 @@ public abstract class OpenWireDestination implements Destination, DataStructure,
 
     public static final String TEMP_DESTINATION_NAME_PREFIX = "ID:";
 
+    @OpenWireTypeProperty
     protected String physicalName;
 
+    @OpenWireTypeProperty(marshaled = false)
     protected transient OpenWireDestination[] compositeDestinations;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected transient String[] destinationPaths;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected transient boolean isPattern;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected transient int hashValue;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected Map<String, String> options;
 
     protected static UnresolvedDestinationTransformer unresolvableDestinationTransformer = new DefaultUnresolvedDestinationTransformer();

@@ -26,6 +26,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageNotWriteableException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.apache.activemq.openwire.utils.OpenWireMarshallingSupport;
@@ -41,6 +42,7 @@ public class OpenWireTextMessage extends OpenWireMessage {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_TEXT_MESSAGE;
 
+    @OpenWireTypeProperty(marshaled = false)
     protected String text;
 
     @Override

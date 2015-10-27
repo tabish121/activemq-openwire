@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="121"
@@ -26,11 +27,19 @@ public class SessionId implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.SESSION_ID;
 
+    @OpenWireTypeProperty(cached = true)
     protected String connectionId;
+
+    @OpenWireTypeProperty
     protected long value;
 
+    @OpenWireTypeProperty(marshaled = false)
     protected transient int hashCode;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected transient String key;
+
+    @OpenWireTypeProperty(marshaled = false)
     protected transient ConnectionId parentId;
 
     public SessionId() {

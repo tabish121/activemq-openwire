@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * @openwire:marshaller code="30"
@@ -25,6 +26,8 @@ import org.apache.activemq.openwire.annotations.OpenWireType;
 public class Response extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.RESPONSE;
+
+    @OpenWireTypeProperty
     int correlationId;
 
     @Override

@@ -19,6 +19,7 @@ package org.apache.activemq.openwire.commands;
 import java.io.IOException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Removes a consumer, producer, session or connection.
@@ -30,7 +31,10 @@ public class RemoveInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REMOVE_INFO;
 
+    @OpenWireTypeProperty(cached = true)
     protected DataStructure objectId;
+
+    @OpenWireTypeProperty(introduced = 5)
     protected long lastDeliveredSequenceId;
 
     public RemoveInfo() {

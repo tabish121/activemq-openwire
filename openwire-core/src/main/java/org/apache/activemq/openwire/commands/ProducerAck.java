@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * A ProducerAck command is sent by a broker to a producer to let it know it has
@@ -31,7 +32,10 @@ public class ProducerAck extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_ACK;
 
+    @OpenWireTypeProperty(introduced = 3)
     protected ProducerId producerId;
+
+    @OpenWireTypeProperty(introduced = 3)
     protected int size;
 
     public ProducerAck() {

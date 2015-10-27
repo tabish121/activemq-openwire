@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
  * Represents a partial command; a large command that has been split up into
@@ -29,7 +30,10 @@ public class PartialCommand implements Command {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PARTIAL_COMMAND;
 
+    @OpenWireTypeProperty
     private int commandId;
+
+    @OpenWireTypeProperty(mandatory = true)
     private byte[] data;
 
     public PartialCommand() {

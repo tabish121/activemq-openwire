@@ -32,6 +32,8 @@ public @interface OpenWireTypeProperty {
 
     boolean cached() default false;
 
+    boolean mandatory() default false;
+
     boolean marshaled() default true;
 
 }
