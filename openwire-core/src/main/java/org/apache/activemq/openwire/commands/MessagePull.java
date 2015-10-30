@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
@@ -31,28 +32,28 @@ public class MessagePull extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_PULL;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected long timeout;
 
-    @OpenWireTypeProperty(introduced = 3)
-    private MessageId messageId;
-
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 4)
     private String correlationId;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeProperty(version = 4, sequence = 5)
+    private MessageId messageId;
+
+    @OpenWireTypeExtension
     private transient boolean tracked = false;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     private transient int quantity = 1;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     private transient boolean alwaysSignalDone;
 
     @Override

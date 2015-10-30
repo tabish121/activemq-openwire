@@ -29,7 +29,7 @@ public class ControlCommand extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONTROL_COMMAND;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private String command;
 
     @Override

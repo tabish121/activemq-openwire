@@ -38,14 +38,14 @@ public class TransactionInfo extends BaseCommand {
     public static final byte FORGET = 6;
     public static final byte END = 7;
 
-    @OpenWireTypeProperty
-    protected byte type;
-
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected TransactionId transactionId;
+
+    @OpenWireTypeProperty(version = 1, sequence = 3)
+    protected byte type;
 
     public TransactionInfo() {
     }

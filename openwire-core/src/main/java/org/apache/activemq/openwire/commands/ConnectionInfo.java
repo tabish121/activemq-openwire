@@ -27,38 +27,38 @@ public class ConnectionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected String clientId;
 
-    @OpenWireTypeProperty(introduced = 8)
-    protected String clientIp;
-
-    @OpenWireTypeProperty
-    protected String userName;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected String password;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 4)
+    protected String userName;
+
+    @OpenWireTypeProperty(version = 1, sequence = 5, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 6)
     protected boolean brokerMasterConnector;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 7)
     protected boolean manageable;
 
-    @OpenWireTypeProperty(introduced = 2)
+    @OpenWireTypeProperty(version = 2, sequence = 8)
     protected boolean clientMaster = true;
 
-    @OpenWireTypeProperty(introduced = 6)
+    @OpenWireTypeProperty(version = 6, sequence = 9)
     protected boolean faultTolerant = false;
 
-    @OpenWireTypeProperty(introduced = 6)
+    @OpenWireTypeProperty(version = 6, sequence = 10)
     protected boolean failoverReconnect;
+
+    @OpenWireTypeProperty(version = 8, sequence = 11)
+    protected String clientIp;
 
     public ConnectionInfo() {
     }

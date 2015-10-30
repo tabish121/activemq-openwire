@@ -27,7 +27,7 @@ public class ExceptionResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.EXCEPTION_RESPONSE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     Throwable exception;
 
     public ExceptionResponse() {

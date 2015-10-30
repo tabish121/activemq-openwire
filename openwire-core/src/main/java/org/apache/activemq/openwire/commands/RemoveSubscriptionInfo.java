@@ -27,14 +27,14 @@ public class RemoveSubscriptionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REMOVE_SUBSCRIPTION_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty
-    protected String clientId;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected String subscriptionName;
+
+    @OpenWireTypeProperty(version = 1, sequence = 3)
+    protected String clientId;
 
     @Override
     public byte getDataStructureType() {

@@ -29,26 +29,26 @@ public class ConsumerControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_CONTROL;
 
-    @OpenWireTypeProperty
-    protected ConsumerId consumerId;
+    @OpenWireTypeProperty(version = 6, sequence = 1)
+    protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected boolean close;
 
-    @OpenWireTypeProperty(introduced = 2)
-    protected boolean stop;
+    @OpenWireTypeProperty(version = 1, sequence = 3)
+    protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(introduced = 2)
-    protected boolean start;
-
-    @OpenWireTypeProperty(introduced = 2)
-    protected boolean flush;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 4)
     protected int prefetch;
 
-    @OpenWireTypeProperty(introduced = 6)
-    protected OpenWireDestination destination;
+    @OpenWireTypeProperty(version = 2, sequence = 5)
+    protected boolean flush;
+
+    @OpenWireTypeProperty(version = 2, sequence = 6)
+    protected boolean start;
+
+    @OpenWireTypeProperty(version = 2, sequence = 7)
+    protected boolean stop;
 
     /**
      * @openwire:property version=6

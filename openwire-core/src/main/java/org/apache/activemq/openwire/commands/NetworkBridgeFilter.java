@@ -31,13 +31,13 @@ public class NetworkBridgeFilter implements DataStructure {
 
     static final Logger LOG = LoggerFactory.getLogger(NetworkBridgeFilter.class);
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected BrokerId networkBrokerId;
 
-    @OpenWireTypeProperty(introduced = 10)
+    @OpenWireTypeProperty(version = 10, sequence = 2)
     protected int messageTTL;
 
-    @OpenWireTypeProperty(introduced = 10)
+    @OpenWireTypeProperty(version = 10, sequence = 3)
     protected int consumerTTL;
 
     public NetworkBridgeFilter() {

@@ -27,11 +27,11 @@ public class ConnectionError extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_ERROR;
 
-    @OpenWireTypeProperty
-    private ConnectionId connectionId;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private Throwable exception;
+
+    @OpenWireTypeProperty(version = 1, sequence = 2)
+    private ConnectionId connectionId;
 
     @Override
     public byte getDataStructureType() {

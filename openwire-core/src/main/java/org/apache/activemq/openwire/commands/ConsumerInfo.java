@@ -35,62 +35,62 @@ public class ConsumerInfo extends BaseCommand {
     public static final byte NETWORK_CONSUMER_PRIORITY = -5;
     public static final byte LOW_PRIORITY = -10;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(cached = true)
-    protected OpenWireDestination destination;
-
-    @OpenWireTypeProperty
-    protected int prefetchSize;
-
-    @OpenWireTypeProperty
-    protected int maximumPendingMessageLimit;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected boolean browser;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
+    protected OpenWireDestination destination;
+
+    @OpenWireTypeProperty(version = 1, sequence = 4)
+    protected int prefetchSize;
+
+    @OpenWireTypeProperty(version = 1, sequence = 5)
+    protected int maximumPendingMessageLimit;
+
+    @OpenWireTypeProperty(version = 1, sequence = 6)
     protected boolean dispatchAsync;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 7)
     protected String selector;
 
-    @OpenWireTypeProperty(introduced = 10)
+    @OpenWireTypeProperty(version = 10, sequence = 8)
     protected String clientId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 9)
     protected String subscriptionName;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 10)
     protected boolean noLocal;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 11)
     protected boolean exclusive;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 12)
     protected boolean retroactive;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 13)
     protected byte priority;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 14, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 15)
+    protected Object additionalPredicate;
+
+    @OpenWireTypeProperty(version = 1, sequence = 16, serialized = false)
+    protected boolean networkSubscription;
+
+    @OpenWireTypeProperty(version = 1, sequence = 17)
     protected boolean optimizedAcknowledge;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 18)
     protected boolean noRangeAcks;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeProperty(version = 4, sequence = 19, serialized = false)
     protected transient List<ConsumerId> networkConsumerIds;
-
-    @OpenWireTypeProperty(marshaled = false)
-    protected transient boolean networkSubscription;
-
-    @OpenWireTypeProperty
-    protected Object additionalPredicate;
 
     public ConsumerInfo() {
     }

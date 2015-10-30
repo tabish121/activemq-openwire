@@ -32,40 +32,40 @@ public class BrokerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.BROKER_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected BrokerId brokerId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected String brokerURL;
 
-    @OpenWireTypeProperty
-    protected boolean slaveBroker;
-
-    @OpenWireTypeProperty
-    protected boolean masterBroker;
-
-    @OpenWireTypeProperty
-    protected boolean faultTolerantConfiguration;
-
-    @OpenWireTypeProperty(introduced = 2)
-    protected boolean networkConnection;
-
-    @OpenWireTypeProperty(introduced = 2)
-    protected boolean duplexConnection;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected BrokerInfo peerBrokerInfos[];
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 4)
     protected String brokerName;
 
-    @OpenWireTypeProperty(introduced = 2)
+    @OpenWireTypeProperty(version = 1, sequence = 5)
+    protected boolean slaveBroker;
+
+    @OpenWireTypeProperty(version = 1, sequence = 6)
+    protected boolean masterBroker;
+
+    @OpenWireTypeProperty(version = 1, sequence = 7)
+    protected boolean faultTolerantConfiguration;
+
+    @OpenWireTypeProperty(version = 2, sequence = 8)
+    protected boolean duplexConnection;
+
+    @OpenWireTypeProperty(version = 2, sequence = 9)
+    protected boolean networkConnection;
+
+    @OpenWireTypeProperty(version = 2, sequence = 10)
     protected long connectionId;
 
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 11)
     protected String brokerUploadUrl;
 
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 12)
     protected String networkProperties;
 
     public BrokerInfo copy() {

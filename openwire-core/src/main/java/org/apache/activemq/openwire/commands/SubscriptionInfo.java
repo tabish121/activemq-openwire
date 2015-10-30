@@ -29,22 +29,22 @@ public class SubscriptionInfo implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DURABLE_SUBSCRIPTION_INFO;
 
-    @OpenWireTypeProperty(introduced = 3)
-    protected OpenWireDestination subscribedDestination;
-
-    @OpenWireTypeProperty(cached = true)
-    protected OpenWireDestination destination;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     protected String clientId;
 
-    @OpenWireTypeProperty
-    protected String subscriptionName;
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
+    protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected String selector;
 
-    @OpenWireTypeProperty(introduced = 11)
+    @OpenWireTypeProperty(version = 1, sequence = 4)
+    protected String subscriptionName;
+
+    @OpenWireTypeProperty(version = 3, sequence = 5)
+    protected OpenWireDestination subscribedDestination;
+
+    @OpenWireTypeProperty(version = 11, sequence = 6)
     protected boolean noLocal;
 
     public SubscriptionInfo() {

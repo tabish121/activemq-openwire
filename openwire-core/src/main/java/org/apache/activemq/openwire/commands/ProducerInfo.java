@@ -28,19 +28,19 @@ public class ProducerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ProducerId producerId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty(introduced = 2)
+    @OpenWireTypeProperty(version = 2, sequence = 4)
     protected boolean dispatchAsync;
 
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 5)
     protected int windowSize;
 
     public ProducerInfo() {

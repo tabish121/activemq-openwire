@@ -27,10 +27,10 @@ public class JournalQueueAck implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_REMOVE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     MessageAck messageAck;
 
     @Override

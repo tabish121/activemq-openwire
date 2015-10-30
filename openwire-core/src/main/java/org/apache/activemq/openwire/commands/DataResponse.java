@@ -27,7 +27,7 @@ public class DataResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DATA_RESPONSE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     DataStructure data;
 
     public DataResponse() {

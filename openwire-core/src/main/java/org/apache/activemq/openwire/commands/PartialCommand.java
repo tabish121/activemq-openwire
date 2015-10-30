@@ -30,10 +30,10 @@ public class PartialCommand implements Command {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PARTIAL_COMMAND;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private int commandId;
 
-    @OpenWireTypeProperty(mandatory = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, mandatory = true)
     private byte[] data;
 
     public PartialCommand() {

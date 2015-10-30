@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,10 +31,10 @@ public abstract class OpenWireTempDestination extends OpenWireDestination {
 
     private static final Logger LOG = LoggerFactory.getLogger(OpenWireTempDestination.class);
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     protected transient String connectionId;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     protected transient int sequenceId;
 
     public OpenWireTempDestination() {

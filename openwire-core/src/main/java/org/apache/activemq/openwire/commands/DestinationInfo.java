@@ -34,19 +34,19 @@ public class DestinationInfo extends BaseCommand {
     public static final byte ADD_OPERATION_TYPE = 0;
     public static final byte REMOVE_OPERATION_TYPE = 1;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected byte operationType;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 4)
     protected long timeout;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 5)
     protected BrokerId[] brokerPath;
 
     public DestinationInfo() {

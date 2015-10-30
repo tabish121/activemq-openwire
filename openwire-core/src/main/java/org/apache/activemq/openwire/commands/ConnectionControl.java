@@ -30,32 +30,32 @@ public class ConnectionControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_CONTROL;
 
-    @OpenWireTypeProperty
-    protected boolean suspend;
-
-    @OpenWireTypeProperty
-    protected boolean resume;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     protected boolean close;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected boolean exit;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected boolean faultTolerant;
 
-    @OpenWireTypeProperty(introduced = 6)
-    protected String connectedBrokers="";
+    @OpenWireTypeProperty(version = 1, sequence = 4)
+    protected boolean resume;
 
-    @OpenWireTypeProperty(introduced = 6)
+    @OpenWireTypeProperty(version = 1, sequence = 5)
+    protected boolean suspend;
+
+    @OpenWireTypeProperty(version = 6, sequence = 6)
+    protected String connectedBrokers = "";
+
+    @OpenWireTypeProperty(version = 6, sequence = 7)
     protected String reconnectTo = "";
 
-    @OpenWireTypeProperty(introduced = 8)
-    protected byte[] token;
-
-    @OpenWireTypeProperty(introduced = 6)
+    @OpenWireTypeProperty(version = 6, sequence = 8)
     protected boolean rebalanceConnection;
+
+    @OpenWireTypeProperty(version = 6, sequence = 9)
+    protected byte[] token;
 
     @Override
     public byte getDataStructureType() {

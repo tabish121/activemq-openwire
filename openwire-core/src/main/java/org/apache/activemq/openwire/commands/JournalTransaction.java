@@ -33,14 +33,14 @@ public class JournalTransaction implements DataStructure {
     public static final byte LOCAL_COMMIT = 4;
     public static final byte LOCAL_ROLLBACK = 5;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
+    public TransactionId transactionId;
+
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     public byte type;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     public boolean wasPrepared;
-
-    @OpenWireTypeProperty
-    public TransactionId transactionId;
 
     public JournalTransaction(byte type, TransactionId transactionId, boolean wasPrepared) {
         this.type = type;

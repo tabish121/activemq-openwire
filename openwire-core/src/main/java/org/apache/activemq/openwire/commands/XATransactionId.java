@@ -22,6 +22,7 @@ import java.util.Arrays;
 import javax.transaction.xa.Xid;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 import org.fusesource.hawtbuf.DataByteArrayInputStream;
 import org.fusesource.hawtbuf.DataByteArrayOutputStream;
@@ -34,25 +35,25 @@ public class XATransactionId extends TransactionId implements Xid, Comparable<XA
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_XA_TRANSACTION_ID;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private int formatId;
 
-    @OpenWireTypeProperty
-    private byte[] branchQualifier;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     private byte[] globalTransactionId;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeProperty(version = 1, sequence = 3)
+    private byte[] branchQualifier;
+
+    @OpenWireTypeExtension
     private transient DataByteArrayOutputStream outputStream;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     private transient byte[] encodedXidBytes;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     private transient int hash;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     private transient String transactionKey;
 
     public XATransactionId() {

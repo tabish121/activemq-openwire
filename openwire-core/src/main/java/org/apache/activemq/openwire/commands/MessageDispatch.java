@@ -27,16 +27,16 @@ public class MessageDispatch extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.MESSAGE_DISPATCH;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected Message message;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 4)
     protected int redeliveryCounter;
 
     @Override

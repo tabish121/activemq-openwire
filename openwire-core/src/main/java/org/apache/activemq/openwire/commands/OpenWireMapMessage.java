@@ -34,7 +34,7 @@ import javax.jms.MessageFormatException;
 import javax.jms.MessageNotWriteableException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.apache.activemq.openwire.utils.OpenWireMarshallingSupport;
@@ -51,7 +51,7 @@ public class OpenWireMapMessage extends OpenWireMessage {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_MAP_MESSAGE;
 
-    @OpenWireTypeProperty(marshaled = false)
+    @OpenWireTypeExtension
     protected transient Map<String, Object> map = new HashMap<String, Object>();
 
     private Object readResolve() throws ObjectStreamException {

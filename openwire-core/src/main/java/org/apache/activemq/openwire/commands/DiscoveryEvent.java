@@ -29,10 +29,10 @@ public class DiscoveryEvent implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.DISCOVERY_EVENT;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     protected String serviceName;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected String brokerName;
 
     public DiscoveryEvent() {

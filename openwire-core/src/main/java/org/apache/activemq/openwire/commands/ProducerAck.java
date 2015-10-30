@@ -32,10 +32,10 @@ public class ProducerAck extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_ACK;
 
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 1)
     protected ProducerId producerId;
 
-    @OpenWireTypeProperty(introduced = 3)
+    @OpenWireTypeProperty(version = 3, sequence = 1)
     protected int size;
 
     public ProducerAck() {

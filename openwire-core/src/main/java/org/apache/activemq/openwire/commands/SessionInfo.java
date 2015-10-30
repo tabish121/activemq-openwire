@@ -27,7 +27,7 @@ public class SessionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.SESSION_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected SessionId sessionId;
 
     public SessionInfo() {

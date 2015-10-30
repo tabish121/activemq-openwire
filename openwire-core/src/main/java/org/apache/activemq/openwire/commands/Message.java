@@ -31,6 +31,7 @@ import java.util.zip.InflaterInputStream;
 import javax.jms.JMSException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
@@ -55,101 +56,101 @@ public abstract class Message extends BaseCommand implements MarshallAware {
      */
     public static final int DEFAULT_MINIMUM_MESSAGE_SIZE = 1024;
 
-    @OpenWireTypeProperty
-    protected MessageId messageId;
-
-    @OpenWireTypeProperty(cached = true)
-    protected OpenWireDestination originalDestination;
-
-    @OpenWireTypeProperty(cached = true)
-    protected TransactionId originalTransactionId;
-
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected ProducerId producerId;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
     protected TransactionId transactionId;
 
-    @OpenWireTypeProperty
-    protected long expiration;
+    @OpenWireTypeProperty(version = 1, sequence = 4, cached = true)
+    protected OpenWireDestination originalDestination;
 
-    @OpenWireTypeProperty
-    protected long timestamp;
+    @OpenWireTypeProperty(version = 1, sequence = 5)
+    protected MessageId messageId;
 
-    @OpenWireTypeProperty
-    protected long arrival;
+    @OpenWireTypeProperty(version = 1, sequence = 6, cached = true)
+    protected TransactionId originalTransactionId;
 
-    @OpenWireTypeProperty(introduced = 3)
-    protected long brokerInTime;
-
-    @OpenWireTypeProperty(introduced = 3)
-    protected long brokerOutTime;
-
-    @OpenWireTypeProperty
-    protected String correlationId;
-
-    @OpenWireTypeProperty
-    protected OpenWireDestination replyTo;
-
-    @OpenWireTypeProperty
-    protected boolean persistent;
-
-    @OpenWireTypeProperty
-    protected String type;
-
-    @OpenWireTypeProperty
-    protected byte priority;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 7)
     protected String groupId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 8)
     protected int groupSequence;
 
-    @OpenWireTypeProperty(cached = true)
-    protected ConsumerId targetConsumerId;
+    @OpenWireTypeProperty(version = 1, sequence = 9)
+    protected String correlationId;
 
-    @OpenWireTypeProperty
-    protected boolean compressed;
+    @OpenWireTypeProperty(version = 1, sequence = 10)
+    protected boolean persistent;
 
-    @OpenWireTypeProperty
-    protected String userId;
+    @OpenWireTypeProperty(version = 1, sequence = 11)
+    protected long expiration;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 12)
+    protected byte priority;
+
+    @OpenWireTypeProperty(version = 1, sequence = 13)
+    protected OpenWireDestination replyTo;
+
+    @OpenWireTypeProperty(version = 1, sequence = 14)
+    protected long timestamp;
+
+    @OpenWireTypeProperty(version = 1, sequence = 15)
+    protected String type;
+
+    @OpenWireTypeProperty(version = 1, sequence = 16)
     protected Buffer content;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 17)
     protected Buffer marshalledProperties;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 18)
     protected DataStructure dataStructure;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 19, cached = true)
+    protected ConsumerId targetConsumerId;
+
+    @OpenWireTypeProperty(version = 1, sequence = 20)
+    protected boolean compressed;
+
+    @OpenWireTypeProperty(version = 1, sequence = 21)
     protected int redeliveryCounter;
 
-    @OpenWireTypeProperty(marshaled = false)
-    protected int size;
-
-    @OpenWireTypeProperty(marshaled = false)
-    protected Map<String, Object> properties;
-
-    @OpenWireTypeProperty(marshaled = false)
-    protected transient boolean recievedByDFBridge;
-
-    @OpenWireTypeProperty(introduced = 2, cached = true)
-    protected boolean droppable;
-
-    @OpenWireTypeProperty(introduced = 10)
-    protected boolean jmsXGroupFirstForConsumer;
-
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 22, cached = true)
     private BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty(introduced = 3, cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 23)
+    protected long arrival;
+
+    @OpenWireTypeProperty(version = 1, sequence = 24)
+    protected String userId;
+
+    @OpenWireTypeProperty(version = 1, sequence = 25, serialized = false)
+    protected transient boolean recievedByDFBridge;
+
+    @OpenWireTypeProperty(version = 2, sequence = 26, cached = true)
+    protected boolean droppable;
+
+    @OpenWireTypeProperty(version = 3, sequence = 27, cached = true)
     private BrokerId[] cluster;
+
+    @OpenWireTypeProperty(version = 3, sequence = 28)
+    protected long brokerInTime;
+
+    @OpenWireTypeProperty(version = 3, sequence = 29)
+    protected long brokerOutTime;
+
+    @OpenWireTypeProperty(version = 10, sequence = 30)
+    protected boolean jmsXGroupFirstForConsumer;
+
+    @OpenWireTypeExtension(serialized = true)
+    protected int size;
+
+    @OpenWireTypeExtension(serialized = true)
+    protected Map<String, Object> properties;
 
     public abstract Message copy();
     public abstract void clearBody() throws JMSException;

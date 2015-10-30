@@ -27,7 +27,7 @@ public class IntegerResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.INTEGER_RESPONSE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     int result;
 
     public IntegerResponse() {

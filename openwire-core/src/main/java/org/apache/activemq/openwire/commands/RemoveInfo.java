@@ -31,10 +31,10 @@ public class RemoveInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REMOVE_INFO;
 
-    @OpenWireTypeProperty(cached = true)
+    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
     protected DataStructure objectId;
 
-    @OpenWireTypeProperty(introduced = 5)
+    @OpenWireTypeProperty(version = 5, sequence = 2)
     protected long lastDeliveredSequenceId;
 
     public RemoveInfo() {

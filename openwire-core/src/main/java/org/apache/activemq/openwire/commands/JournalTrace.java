@@ -27,7 +27,7 @@ public class JournalTrace implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_TRACE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private String message;
 
     public JournalTrace() {

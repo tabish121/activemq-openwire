@@ -17,6 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
 import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 
 /**
@@ -32,20 +33,20 @@ public class ReplayCommand extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.REPLAY;
 
-    @OpenWireTypeProperty
-    private String producerId;
-
-    @OpenWireTypeProperty
-    private int firstAckNumber;
-
-    @OpenWireTypeProperty
-    private int lastAckNumber;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     private int firstNakNumber;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     private int lastNakNumber;
+
+    @OpenWireTypeExtension(serialized = true)
+    private String producerId;
+
+    @OpenWireTypeExtension(serialized = true)
+    private int firstAckNumber;
+
+    @OpenWireTypeExtension(serialized = true)
+    private int lastAckNumber;
 
     public ReplayCommand() {
     }
@@ -61,8 +62,6 @@ public class ReplayCommand extends BaseCommand {
 
     /**
      * Is used to uniquely identify the producer of the sequence
-     *
-     * @openwire:property version=1 cache=false
      */
     public void setProducerId(String producerId) {
         this.producerId = producerId;
@@ -75,8 +74,6 @@ public class ReplayCommand extends BaseCommand {
     /**
      * Is used to specify the first sequence number being acknowledged as delivered on the transport
      * so that it can be removed from cache
-     *
-     * @openwire:property version=1
      */
     public void setFirstAckNumber(int firstSequenceNumber) {
         this.firstAckNumber = firstSequenceNumber;
@@ -89,8 +86,6 @@ public class ReplayCommand extends BaseCommand {
     /**
      * Is used to specify the last sequence number being acknowledged as delivered on the transport
      * so that it can be removed from cache
-     *
-     * @openwire:property version=1
      */
     public void setLastAckNumber(int lastSequenceNumber) {
         this.lastAckNumber = lastSequenceNumber;

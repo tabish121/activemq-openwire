@@ -27,7 +27,7 @@ public class ConnectionId implements DataStructure, Comparable<ConnectionId> {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_ID;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     protected String value;
 
     public ConnectionId() {

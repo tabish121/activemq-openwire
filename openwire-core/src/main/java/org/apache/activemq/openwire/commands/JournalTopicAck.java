@@ -27,22 +27,22 @@ public class JournalTopicAck implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_ACK;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty
-    protected String clientId;
-
-    @OpenWireTypeProperty
-    protected String subscritionName;
-
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 2)
     protected MessageId messageId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 3)
     protected long messageSequenceId;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 4)
+    protected String subscritionName;
+
+    @OpenWireTypeProperty(version = 1, sequence = 5)
+    protected String clientId;
+
+    @OpenWireTypeProperty(version = 1, sequence = 6)
     protected TransactionId transactionId;
 
     @Override

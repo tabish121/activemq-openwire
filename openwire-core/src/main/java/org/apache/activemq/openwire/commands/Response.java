@@ -27,7 +27,7 @@ public class Response extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.RESPONSE;
 
-    @OpenWireTypeProperty
+    @OpenWireTypeProperty(version = 1, sequence = 1)
     int correlationId;
 
     @Override
