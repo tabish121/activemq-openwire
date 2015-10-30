@@ -22,18 +22,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the annotation value for the properties of an OpenWire data type.
+ * Defines the annotation value to use to describes any extensions
+ * to a given OpenWire data type that is not part of the marshaled
+ * data for that type.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface OpenWireTypeProperty {
+public @interface OpenWireTypeExtension {
 
-    int version();
-
-    int sequence();
-
-    boolean cached() default false;
-
-    boolean mandatory() default false;
+    /**
+     * Defines if the extension is transient or not.
+     *
+     * @return true if the value should not be marked as transient.
+     */
+    boolean serialized() default false;
 
 }
