@@ -27,7 +27,7 @@ import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
  *
  * @openwire:marshaller code="19" version="3"
  */
-@OpenWireType(typeCode = 19, introduced = 3)
+@OpenWireType(typeCode = 19, version = 3)
 public class ProducerAck extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_ACK;

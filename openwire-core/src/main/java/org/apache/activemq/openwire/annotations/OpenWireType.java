@@ -27,6 +27,6 @@ public @interface OpenWireType {
 
     int typeCode();
 
-    int introduced() default 1;
+    int version() default 1;
 
 }

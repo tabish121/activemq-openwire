@@ -31,7 +31,7 @@ import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
  *
  * openwire:marshaller code="29"
  */
-@OpenWireType(typeCode = 29, introduced = 3)
+@OpenWireType(typeCode = 29, version = 3)
 public class OpenWireBlobMessage extends OpenWireMessage {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_BLOB_MESSAGE;
