@@ -66,12 +66,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.activemq</groupId>
-      <artifactId>openwire-generator</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-broker</artifactId>
       <version>${activemq-version}</version>
       <scope>test</scope>
