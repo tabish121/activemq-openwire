@@ -17,8 +17,8 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireExtension;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="122"
@@ -28,22 +28,22 @@ public class ConsumerId implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONSUMER_ID;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1)
     protected String connectionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2)
+    @OpenWireProperty(version = 1, sequence = 2)
     protected long sessionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3)
+    @OpenWireProperty(version = 1, sequence = 3)
     protected long value;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient int hashCode;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient String key;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient SessionId parentId;
 
     public ConsumerId() {

@@ -19,7 +19,7 @@ package org.apache.activemq.openwire.commands;
 import java.io.IOException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="7"
@@ -38,13 +38,13 @@ public class TransactionInfo extends BaseCommand {
     public static final byte FORGET = 6;
     public static final byte END = 7;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
+    @OpenWireProperty(version = 1, sequence = 2, cached = true)
     protected TransactionId transactionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3)
+    @OpenWireProperty(version = 1, sequence = 3)
     protected byte type;
 
     public TransactionInfo() {

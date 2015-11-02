@@ -17,8 +17,8 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireExtension;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="22"
@@ -69,31 +69,31 @@ public class MessageAck extends BaseCommand {
      */
     public static final byte EXPIRED_ACK_TYPE = 6;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
+    @OpenWireProperty(version = 1, sequence = 2, cached = true)
     protected TransactionId transactionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
+    @OpenWireProperty(version = 1, sequence = 3, cached = true)
     protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 4)
+    @OpenWireProperty(version = 1, sequence = 4)
     protected byte ackType;
 
-    @OpenWireTypeProperty(version = 1, sequence = 5)
+    @OpenWireProperty(version = 1, sequence = 5)
     protected MessageId firstMessageId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 6)
+    @OpenWireProperty(version = 1, sequence = 6)
     protected MessageId lastMessageId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 7)
+    @OpenWireProperty(version = 1, sequence = 7)
     protected int messageCount;
 
-    @OpenWireTypeProperty(version = 7, sequence = 8)
+    @OpenWireProperty(version = 7, sequence = 8)
     protected Throwable poisonCause;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient String consumerKey;
 
     public MessageAck() {

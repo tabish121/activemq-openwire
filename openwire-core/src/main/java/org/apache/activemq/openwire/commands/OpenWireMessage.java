@@ -27,7 +27,7 @@ import javax.jms.JMSException;
 import javax.jms.MessageFormatException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
+import org.apache.activemq.openwire.annotations.OpenWireExtension;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
@@ -42,10 +42,10 @@ public class OpenWireMessage extends Message {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.OPENWIRE_MESSAGE;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient boolean useCompression;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     protected transient boolean nestedMapAndListAllowed;
 
     @Override

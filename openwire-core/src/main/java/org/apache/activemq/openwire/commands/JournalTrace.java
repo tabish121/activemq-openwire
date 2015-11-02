@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="53"
@@ -27,7 +27,7 @@ public class JournalTrace implements DataStructure {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.JOURNAL_TRACE;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1)
     private String message;
 
     public JournalTrace() {

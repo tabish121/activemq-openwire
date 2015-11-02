@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 
 /**
@@ -28,19 +28,19 @@ public class ProducerInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.PRODUCER_INFO;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected ProducerId producerId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2, cached = true)
+    @OpenWireProperty(version = 1, sequence = 2, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
+    @OpenWireProperty(version = 1, sequence = 3, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty(version = 2, sequence = 4)
+    @OpenWireProperty(version = 2, sequence = 4)
     protected boolean dispatchAsync;
 
-    @OpenWireTypeProperty(version = 3, sequence = 5)
+    @OpenWireProperty(version = 3, sequence = 5)
     protected int windowSize;
 
     public ProducerInfo() {

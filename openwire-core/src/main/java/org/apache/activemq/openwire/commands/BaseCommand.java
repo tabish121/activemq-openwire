@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller
@@ -25,10 +25,10 @@ import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
 @OpenWireType(typeCode = 0)
 public abstract class BaseCommand implements Command {
 
-    @OpenWireTypeProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1)
     protected int commandId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2)
+    @OpenWireProperty(version = 1, sequence = 2)
     protected boolean responseRequired;
 
     public void copy(BaseCommand copy) {

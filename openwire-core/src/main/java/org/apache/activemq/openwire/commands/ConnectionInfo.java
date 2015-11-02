@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="3"
@@ -27,37 +27,37 @@ public class ConnectionInfo extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_INFO;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected ConnectionId connectionId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2)
+    @OpenWireProperty(version = 1, sequence = 2)
     protected String clientId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3)
+    @OpenWireProperty(version = 1, sequence = 3)
     protected String password;
 
-    @OpenWireTypeProperty(version = 1, sequence = 4)
+    @OpenWireProperty(version = 1, sequence = 4)
     protected String userName;
 
-    @OpenWireTypeProperty(version = 1, sequence = 5, cached = true)
+    @OpenWireProperty(version = 1, sequence = 5, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty(version = 1, sequence = 6)
+    @OpenWireProperty(version = 1, sequence = 6)
     protected boolean brokerMasterConnector;
 
-    @OpenWireTypeProperty(version = 1, sequence = 7)
+    @OpenWireProperty(version = 1, sequence = 7)
     protected boolean manageable;
 
-    @OpenWireTypeProperty(version = 2, sequence = 8)
+    @OpenWireProperty(version = 2, sequence = 8)
     protected boolean clientMaster = true;
 
-    @OpenWireTypeProperty(version = 6, sequence = 9)
+    @OpenWireProperty(version = 6, sequence = 9)
     protected boolean faultTolerant = false;
 
-    @OpenWireTypeProperty(version = 6, sequence = 10)
+    @OpenWireProperty(version = 6, sequence = 10)
     protected boolean failoverReconnect;
 
-    @OpenWireTypeProperty(version = 8, sequence = 11)
+    @OpenWireProperty(version = 8, sequence = 11)
     protected String clientIp;
 
     public ConnectionInfo() {

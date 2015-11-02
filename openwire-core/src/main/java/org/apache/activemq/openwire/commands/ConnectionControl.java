@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * Used by the Broker to control the connection state, the client should react to
@@ -30,31 +30,31 @@ public class ConnectionControl extends BaseCommand {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.CONNECTION_CONTROL;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1)
     protected boolean close;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2)
+    @OpenWireProperty(version = 1, sequence = 2)
     protected boolean exit;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3)
+    @OpenWireProperty(version = 1, sequence = 3)
     protected boolean faultTolerant;
 
-    @OpenWireTypeProperty(version = 1, sequence = 4)
+    @OpenWireProperty(version = 1, sequence = 4)
     protected boolean resume;
 
-    @OpenWireTypeProperty(version = 1, sequence = 5)
+    @OpenWireProperty(version = 1, sequence = 5)
     protected boolean suspend;
 
-    @OpenWireTypeProperty(version = 6, sequence = 6)
+    @OpenWireProperty(version = 6, sequence = 6)
     protected String connectedBrokers = "";
 
-    @OpenWireTypeProperty(version = 6, sequence = 7)
+    @OpenWireProperty(version = 6, sequence = 7)
     protected String reconnectTo = "";
 
-    @OpenWireTypeProperty(version = 6, sequence = 8)
+    @OpenWireProperty(version = 6, sequence = 8)
     protected boolean rebalanceConnection;
 
-    @OpenWireTypeProperty(version = 6, sequence = 9)
+    @OpenWireProperty(version = 6, sequence = 9)
     protected byte[] token;
 
     @Override

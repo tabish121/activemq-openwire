@@ -24,8 +24,8 @@ import java.net.URL;
 import javax.jms.JMSException;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeExtension;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireExtension;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * An implementation of ActiveMQ's BlobMessage for out of band BLOB transfer
@@ -39,19 +39,19 @@ public class OpenWireBlobMessage extends OpenWireMessage {
 
     public static final String BINARY_MIME_TYPE = "application/octet-stream";
 
-    @OpenWireTypeProperty(version = 3, sequence = 1)
+    @OpenWireProperty(version = 3, sequence = 1)
     private String remoteBlobUrl;
 
-    @OpenWireTypeProperty(version = 3, sequence = 2, cached = true)
+    @OpenWireProperty(version = 3, sequence = 2, cached = true)
     private String mimeType;
 
-    @OpenWireTypeProperty(version = 3, sequence = 3)
+    @OpenWireProperty(version = 3, sequence = 3)
     private boolean deletedByBroker;
 
-    @OpenWireTypeExtension
+    @OpenWireExtension
     private transient URL url;
 
-    @OpenWireTypeExtension(serialized = true)
+    @OpenWireExtension(serialized = true)
     private String name;
 
     @Override

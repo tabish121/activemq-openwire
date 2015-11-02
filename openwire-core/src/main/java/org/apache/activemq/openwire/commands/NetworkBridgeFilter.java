@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +31,13 @@ public class NetworkBridgeFilter implements DataStructure {
 
     static final Logger LOG = LoggerFactory.getLogger(NetworkBridgeFilter.class);
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected BrokerId networkBrokerId;
 
-    @OpenWireTypeProperty(version = 10, sequence = 2)
+    @OpenWireProperty(version = 10, sequence = 2)
     protected int messageTTL;
 
-    @OpenWireTypeProperty(version = 10, sequence = 3)
+    @OpenWireProperty(version = 10, sequence = 3)
     protected int consumerTTL;
 
     public NetworkBridgeFilter() {

@@ -17,7 +17,7 @@
 package org.apache.activemq.openwire.commands;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="34"
@@ -27,7 +27,7 @@ public class IntegerResponse extends Response {
 
     public static final byte DATA_STRUCTURE_TYPE = CommandTypes.INTEGER_RESPONSE;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1)
     int result;
 
     public IntegerResponse() {

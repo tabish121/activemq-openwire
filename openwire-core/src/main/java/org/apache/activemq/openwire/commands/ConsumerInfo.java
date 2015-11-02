@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
-import org.apache.activemq.openwire.annotations.OpenWireTypeProperty;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
  * @openwire:marshaller code="5"
@@ -35,61 +35,61 @@ public class ConsumerInfo extends BaseCommand {
     public static final byte NETWORK_CONSUMER_PRIORITY = -5;
     public static final byte LOW_PRIORITY = -10;
 
-    @OpenWireTypeProperty(version = 1, sequence = 1, cached = true)
+    @OpenWireProperty(version = 1, sequence = 1, cached = true)
     protected ConsumerId consumerId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 2)
+    @OpenWireProperty(version = 1, sequence = 2)
     protected boolean browser;
 
-    @OpenWireTypeProperty(version = 1, sequence = 3, cached = true)
+    @OpenWireProperty(version = 1, sequence = 3, cached = true)
     protected OpenWireDestination destination;
 
-    @OpenWireTypeProperty(version = 1, sequence = 4)
+    @OpenWireProperty(version = 1, sequence = 4)
     protected int prefetchSize;
 
-    @OpenWireTypeProperty(version = 1, sequence = 5)
+    @OpenWireProperty(version = 1, sequence = 5)
     protected int maximumPendingMessageLimit;
 
-    @OpenWireTypeProperty(version = 1, sequence = 6)
+    @OpenWireProperty(version = 1, sequence = 6)
     protected boolean dispatchAsync;
 
-    @OpenWireTypeProperty(version = 1, sequence = 7)
+    @OpenWireProperty(version = 1, sequence = 7)
     protected String selector;
 
-    @OpenWireTypeProperty(version = 10, sequence = 8)
+    @OpenWireProperty(version = 10, sequence = 8)
     protected String clientId;
 
-    @OpenWireTypeProperty(version = 1, sequence = 9)
+    @OpenWireProperty(version = 1, sequence = 9)
     protected String subscriptionName;
 
-    @OpenWireTypeProperty(version = 1, sequence = 10)
+    @OpenWireProperty(version = 1, sequence = 10)
     protected boolean noLocal;
 
-    @OpenWireTypeProperty(version = 1, sequence = 11)
+    @OpenWireProperty(version = 1, sequence = 11)
     protected boolean exclusive;
 
-    @OpenWireTypeProperty(version = 1, sequence = 12)
+    @OpenWireProperty(version = 1, sequence = 12)
     protected boolean retroactive;
 
-    @OpenWireTypeProperty(version = 1, sequence = 13)
+    @OpenWireProperty(version = 1, sequence = 13)
     protected byte priority;
 
-    @OpenWireTypeProperty(version = 1, sequence = 14, cached = true)
+    @OpenWireProperty(version = 1, sequence = 14, cached = true)
     protected BrokerId[] brokerPath;
 
-    @OpenWireTypeProperty(version = 1, sequence = 15)
+    @OpenWireProperty(version = 1, sequence = 15)
     protected Object additionalPredicate;
 
-    @OpenWireTypeProperty(version = 1, sequence = 16, serialized = false)
+    @OpenWireProperty(version = 1, sequence = 16, serialized = false)
     protected boolean networkSubscription;
 
-    @OpenWireTypeProperty(version = 1, sequence = 17)
+    @OpenWireProperty(version = 1, sequence = 17)
     protected boolean optimizedAcknowledge;
 
-    @OpenWireTypeProperty(version = 1, sequence = 18)
+    @OpenWireProperty(version = 1, sequence = 18)
     protected boolean noRangeAcks;
 
-    @OpenWireTypeProperty(version = 4, sequence = 19, serialized = false)
+    @OpenWireProperty(version = 4, sequence = 19, serialized = false)
     protected transient List<ConsumerId> networkConsumerIds;
 
     public ConsumerInfo() {
