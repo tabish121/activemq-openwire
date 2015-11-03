@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.generator.builtin;
 
+import static org.apache.activemq.openwire.generator.GeneratorUtils.writeApacheLicense;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -23,6 +25,7 @@ import java.util.Set;
 
 import org.apache.activemq.openwire.generator.AbstractGenerator;
 import org.apache.activemq.openwire.generator.GeneratorUtils;
+import org.apache.activemq.openwire.generator.TypeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,6 +69,13 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
         this.baseDir = baseDir;
     }
 
+    /**
+     * @return the package name where the OpenWire marshalers are written.
+     */
+    public String getCodecPackage() {
+        return codecPackage;
+    }
+
     //----- Implementation ---------------------------------------------------//
 
     protected void processClass(Class<?> openWireType, File outputFolder) throws Exception {
@@ -73,36 +83,66 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
 
         try (PrintWriter out = new PrintWriter(new FileWriter(marshalerFile));) {
             LOG.debug("Output file: {}", marshalerFile.getAbsolutePath());
-            writeLicense(out);
+            writeApacheLicense(out);
+            writePreamble(out, openWireType);
+            writeClassDefinition(out, openWireType);
+            writeClassClosure(out, openWireType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    /**
-     * Write the license to the file
-     *
-     * @param out
-     *      The PrintWriter to write to.
-     */
-    private void writeLicense(PrintWriter out) {
-        out.println("/*");
-        out.println(" * Licensed to the Apache Software Foundation (ASF) under one or more");
-        out.println(" * contributor license agreements.  See the NOTICE file distributed with");
-        out.println(" * this work for additional information regarding copyright ownership.");
-        out.println(" * The ASF licenses this file to You under the Apache License, Version 2.0");
-        out.println(" * (the \"License\"); you may not use this file except in compliance with");
-        out.println(" * the License.  You may obtain a copy of the License at");
-        out.println(" *");
-        out.println(" * http://www.apache.org/licenses/LICENSE-2.0");
-        out.println(" *");
-        out.println(" * Unless required by applicable law or agreed to in writing, software");
-        out.println(" * distributed under the License is distributed on an \"AS IS\" BASIS,");
-        out.println(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.");
-        out.println(" * See the License for the specific language governing permissions and");
-        out.println(" * limitations under the License.");
-        out.println(" */");
+    private void writePreamble(PrintWriter out, Class<?> openWireType) {
+        out.println("package " + getCodecPackage() + ";");
+        out.println("");
+        out.println("import java.io.DataInput;");
+        out.println("import java.io.DataOutput;");
+        out.println("import java.io.IOException;");
+        out.println("");
+        out.println("import " + getCodecPackage() + ".*;");
+        out.println("import " + openWireType.getPackage().getName() + ".*;");
+        out.println("");
     }
 
+    private void writeClassDefinition(PrintWriter out, Class<?> openWireType) {
+        String abstractModifier = TypeUtils.getAbstractModifier(openWireType);
+        String className = getClassName(openWireType);
+        String baseClassName = getBaseClassName(openWireType);
 
+        out.println("/**");
+        out.println(" * Marshalling code for Open Wire for " + openWireType.getName() + "");
+        out.println(" *");
+        out.println(" * NOTE!: This file is auto generated - do not modify!");
+        out.println(" *");
+        out.println(" */");
+        out.println("public " + abstractModifier + "class " + className + " extends " + baseClassName + " {");
+        out.println("");
+    }
+
+    private void writeClassClosure(PrintWriter out, Class<?> openWireType) {
+        out.println("}");
+    }
+
+    //----- Helper Methods for Code Generation -------------------------------//
+
+    private String getClassName(Class<?> openWireType) {
+        return openWireType.getSimpleName() + "Marshaller";
+    }
+
+    private String getBaseClassName(Class<?> openWireType) {
+        String answer = "BaseDataStreamMarshaller";
+
+        Class<?> superClass = openWireType.getSuperclass();
+        if (superClass != null) {
+            String superName = superClass.getSimpleName();
+            if (!superName.equals("Object") &&
+                !superName.equals("JNDIBaseStorable") &&
+                !superName.equals("DataStructureSupport")) {
+
+                answer = superName + "Marshaller";
+            }
+        }
+
+        return answer;
+    }
 }
