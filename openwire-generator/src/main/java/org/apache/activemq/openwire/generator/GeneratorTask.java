@@ -16,191 +16,81 @@
  */
 package org.apache.activemq.openwire.generator;
 
-import java.io.File;
+import java.util.List;
+import java.util.Set;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
-import org.codehaus.jam.JamService;
-import org.codehaus.jam.JamServiceFactory;
-import org.codehaus.jam.JamServiceParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The main task that controls the OpenWire code generation routines.
  */
-public class GeneratorTask extends Task {
+public class GeneratorTask {
 
-    protected int fromVersion = 1;
-    protected int toVersion = 1;
-    protected boolean rangedGenerate = true;
-    protected File sourceDir = new File("./src/main/java");
-    protected File targetDir = new File("./src/main/java");
-    protected boolean generateMarshalers = true;
-    protected boolean generateTests = false;
-    protected String commandsPackage;
-    protected String codecPackageRoot;
+    private static final Logger LOG = LoggerFactory.getLogger(GeneratorTask.class);
+
+    private String baseDir = "./src/main/java";
 
     public static void main(String[] args) {
 
-        Project project = new Project();
-        project.init();
         GeneratorTask generator = new GeneratorTask();
-        generator.setProject(project);
 
-        if (args.length > 0) {
-            generator.fromVersion = Integer.parseInt(args[0]);
-        }
-
-        if (args.length > 0) {
-            generator.toVersion = Integer.parseInt(args[0]);
-        }
-
-        if (args.length > 1) {
-            generator.sourceDir = new File(args[1]);
-        }
-
-        if (args.length > 2) {
-            generator.targetDir = new File(args[1]);
-        }
-
-        if (args.length > 3) {
-            generator.commandsPackage = args[2];
-        }
-
-        if (args.length > 4) {
-            generator.codecPackageRoot = args[3];
-        }
-
-        generator.execute();
-    }
-
-    @Override
-    public void execute() throws BuildException {
         try {
-            System.out.println("======================================================");
-            System.out.println("OpenWire Generator: Command source files in: ");
-            System.out.println("" + sourceDir);
-            System.out.println("======================================================");
-
-            JamServiceFactory jamServiceFactory = JamServiceFactory.getInstance();
-            JamServiceParams params = jamServiceFactory.createServiceParams();
-            File[] dirs = new File[] { sourceDir };
-            params.includeSourcePattern(dirs, "**/*.java");
-            JamService jam = jamServiceFactory.createService(params);
-
-            if (generateMarshalers) {
-                if (!isRangedGenerate()) {
-                    runMarshalerGenerateScript(jam, fromVersion);
-                    if (toVersion != fromVersion) {
-                        runMarshalerGenerateScript(jam, toVersion);
-                    }
-                } else {
-                    for (int i = fromVersion; i <= toVersion; ++i) {
-                        runMarshalerGenerateScript(jam, i);
-                    }
-                }
+            if (args.length >= 1) {
+                generator.setBaseDir(args[1]);
             }
 
-            if (generateTests) {
-                if (!isRangedGenerate()) {
-                    runTestGenerateScript(jam, fromVersion);
-                    if (toVersion != fromVersion) {
-                        runTestGenerateScript(jam, toVersion);
-                    }
-                } else {
-                    for (int i = fromVersion; i <= toVersion; ++i) {
-                        runTestGenerateScript(jam, i);
-                    }
-                }
-            }
-
+            generator.execute();
         } catch (Exception e) {
-            throw new BuildException(e);
+            System.out.println("Error generating source:");
+            e.printStackTrace();
         }
     }
 
-    protected void runMarshalerGenerateScript(JamService jam, int version) throws Exception {
-        System.out.println("======================================================");
-        System.out.println(" Generating Marshallers for OpenWire version: " + version);
-        System.out.println("======================================================");
-        MarshallingGenerator script = new MarshallingGenerator();
-        runScript(script, jam, version);
-    }
+    //----- Perform the generation by finding generators ---------------------//
 
-    protected void runTestGenerateScript(JamService jam, int version) throws Exception {
-        System.out.println("======================================================");
-        System.out.println(" Generating Test Cases for OpenWire version: " + version);
-        System.out.println("======================================================");
-        TestsGenerator script = new TestsGenerator();
-        runScript(script, jam, version);
-    }
+    public void execute() throws Exception {
+        LOG.info("===========================================================");
+        LOG.info("Running OpenWire Generator");
+        LOG.info("===========================================================");
+        LOG.info("Base Diractory = {}", getBaseDir());
 
-    protected void runScript(MultiSourceGenerator script, JamService jam, int version) throws Exception {
-        script.setJam(jam);
-        script.setTargetDir(targetDir.getCanonicalPath());
-        script.setOpenwireVersion(version);
-        if (commandsPackage != null) {
-            script.setCommandsPackage(commandsPackage);
+        Set<Class<?>> openWireTypes = GeneratorUtils.findOpenWireTypes();
+        for (Class<?> openWireType : openWireTypes) {
+            LOG.trace("Found OpenWire Type: {}", openWireType.getName());
         }
-        if (codecPackageRoot != null) {
-            script.setCodecPackageRoot(codecPackageRoot);
+
+        List<AbstractGenerator> generators = getOpenWireGenerators();
+
+        for (AbstractGenerator generator : generators) {
+            generator.setBaseDir(getBaseDir());
+
+            generator.run(openWireTypes);
         }
-        script.run();
+
+        LOG.info("===========================================================");
     }
 
-    public int getFromVersion() {
-        return fromVersion;
+    /**
+     * Returns the active generators to run with.  Can be overridden by an extension.
+     *
+     * @return list of generators to use.
+     */
+    protected List<AbstractGenerator> getOpenWireGenerators() {
+        return Generators.BUILTIN;
     }
 
-    public void setFromVersion(int version) {
-        this.fromVersion = version;
+    /**
+     * @return the baseDir
+     */
+    public String getBaseDir() {
+        return baseDir;
     }
 
-    public int getToVersion() {
-        return toVersion;
-    }
-
-    public void setToVersion(int version) {
-        this.toVersion = version;
-    }
-
-    public File getSourceDir() {
-        return sourceDir;
-    }
-
-    public void setSourceDir(File sourceDir) {
-        this.sourceDir = sourceDir;
-    }
-
-    public File getTargetDir() {
-        return targetDir;
-    }
-
-    public void setTargetDir(File targetDir) {
-        this.targetDir = targetDir;
-    }
-
-    public boolean isGenerateMarshalers() {
-        return generateMarshalers;
-    }
-
-    public void setGenerateMarshalers(boolean generateMarshalers) {
-        this.generateMarshalers = generateMarshalers;
-    }
-
-    public boolean isGenerateTests() {
-        return generateTests;
-    }
-
-    public void setGenerateTests(boolean generateTests) {
-        this.generateTests = generateTests;
-    }
-
-    public boolean isRangedGenerate() {
-        return this.rangedGenerate;
-    }
-
-    public void setRangedGenerate(boolean rangedGenerate) {
-        this.rangedGenerate = rangedGenerate;
+    /**
+     * @param baseDir the baseDir to set
+     */
+    public void setBaseDir(String baseDir) {
+        this.baseDir = baseDir;
     }
 }
