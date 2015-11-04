@@ -30,9 +30,9 @@ import java.util.zip.InflaterInputStream;
 
 import javax.jms.JMSException;
 
-import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.apache.activemq.openwire.annotations.OpenWireExtension;
 import org.apache.activemq.openwire.annotations.OpenWireProperty;
+import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.apache.activemq.openwire.codec.OpenWireFormat;
 import org.apache.activemq.openwire.utils.ExceptionSupport;
 import org.apache.activemq.openwire.utils.OpenWireMarshallingSupport;
@@ -46,7 +46,7 @@ import org.fusesource.hawtbuf.UTF8Buffer;
  *
  * @openwire:marshaller
  */
-@OpenWireType(typeCode = 0)
+@OpenWireType(typeCode = 0, marshalAware = true)
 public abstract class Message extends BaseCommand implements MarshallAware {
 
     public static final String ORIGINAL_EXPIRATION = "originalExpiration";

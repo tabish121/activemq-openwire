@@ -29,4 +29,6 @@ public @interface OpenWireType {
 
     int version() default 1;
 
+    boolean marshalAware() default false;
+
 }
