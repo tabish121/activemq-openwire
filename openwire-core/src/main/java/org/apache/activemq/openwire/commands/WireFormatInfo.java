@@ -44,7 +44,7 @@ public class WireFormatInfo implements Command, MarshallAware {
     private static final int MAX_PROPERTY_SIZE = 1024 * 4;
     private static final byte MAGIC[] = new byte[] { 'A', 'c', 't', 'i', 'v', 'e', 'M', 'Q' };
 
-    @OpenWireProperty(version = 1, sequence = 1)
+    @OpenWireProperty(version = 1, sequence = 1, size = 8)
     protected byte magic[] = MAGIC;
 
     @OpenWireProperty(version = 1, sequence = 2)

@@ -38,4 +38,6 @@ public @interface OpenWireProperty {
 
     boolean mandatory() default false;
 
+    int size() default -1;
+
 }
