@@ -16,14 +16,14 @@
  */
 package org.apache.activemq.openwire.generator;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Interface used for all Generator types.
  */
-public interface AbstractGenerator {
+public interface Generator {
 
-    public void run(Set<Class<?>> openWireTypes) throws Exception;
+    public void run(List<OpenWireTypeDescriptor> typeDescriptors) throws Exception;
 
     public void setBaseDir(String baseDir);
 

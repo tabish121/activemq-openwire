@@ -26,7 +26,7 @@ import org.apache.activemq.openwire.generator.builtin.UniversalMarshallerGenerat
  */
 public class Generators {
 
-    public static List<AbstractGenerator> BUILTIN = new ArrayList<AbstractGenerator>();
+    public static List<Generator> BUILTIN = new ArrayList<Generator>();
 
     static {
         BUILTIN.add(new UniversalMarshallerGenerator());

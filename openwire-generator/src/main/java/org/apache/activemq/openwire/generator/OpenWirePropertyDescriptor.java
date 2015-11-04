@@ -16,18 +16,32 @@
  */
 package org.apache.activemq.openwire.generator;
 
-import java.lang.reflect.Modifier;
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
- * Utility methods for working with the OpenWire Type classes.
+ * Wraps a property of an OpenWire protocol type to provide support
+ * for generating code to handle that property.
  */
-public final class TypeUtils {
+public class OpenWirePropertyDescriptor {
 
-    public static boolean isAbstract(Class<?> openWireType) {
-        return Modifier.isAbstract(openWireType.getModifiers());
+    private final Class<?> openWireProperty;
+    private OpenWireProperty propertyAnnotation;
+
+    public OpenWirePropertyDescriptor(Class<?> openWireProperty) {
+        this.openWireProperty = openWireProperty;
     }
 
-    public static String getAbstractModifier(Class<?> openWireType) {
-        return isAbstract(openWireType) ? "abstract " : "";
+    /**
+     * @return the declared name of this property.
+     */
+    public String getPropertyName() {
+        return openWireProperty.getSimpleName();
+    }
+
+    /**
+     * @return the position in the marshaling process this type should occupy.
+     */
+    public int getMarshalingSequence() {
+        return propertyAnnotation.sequence();
     }
 }

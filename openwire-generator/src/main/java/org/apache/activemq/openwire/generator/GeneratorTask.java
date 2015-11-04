@@ -16,6 +16,7 @@
  */
 package org.apache.activemq.openwire.generator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -55,17 +56,20 @@ public class GeneratorTask {
         LOG.info("===========================================================");
         LOG.info("Base Diractory = {}", getBaseDir());
 
+        List<OpenWireTypeDescriptor> descriptors = new ArrayList<OpenWireTypeDescriptor>();
+
         Set<Class<?>> openWireTypes = GeneratorUtils.findOpenWireTypes();
         for (Class<?> openWireType : openWireTypes) {
-            LOG.trace("Found OpenWire Type: {}", openWireType.getName());
+            LOG.trace("Found OpenWire Type: {}", openWireType.getSimpleName());
+            descriptors.add(new OpenWireTypeDescriptor(openWireType));
         }
 
-        List<AbstractGenerator> generators = getOpenWireGenerators();
+        List<Generator> generators = getOpenWireGenerators();
 
-        for (AbstractGenerator generator : generators) {
+        for (Generator generator : generators) {
             generator.setBaseDir(getBaseDir());
 
-            generator.run(openWireTypes);
+            generator.run(descriptors);
         }
 
         LOG.info("===========================================================");
@@ -76,7 +80,7 @@ public class GeneratorTask {
      *
      * @return list of generators to use.
      */
-    protected List<AbstractGenerator> getOpenWireGenerators() {
+    protected List<Generator> getOpenWireGenerators() {
         return Generators.BUILTIN;
     }
 

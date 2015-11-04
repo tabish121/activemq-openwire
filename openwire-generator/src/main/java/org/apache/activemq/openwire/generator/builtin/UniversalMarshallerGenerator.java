@@ -21,11 +21,11 @@ import static org.apache.activemq.openwire.generator.GeneratorUtils.writeApacheL
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Set;
+import java.util.List;
 
-import org.apache.activemq.openwire.generator.AbstractGenerator;
+import org.apache.activemq.openwire.generator.Generator;
 import org.apache.activemq.openwire.generator.GeneratorUtils;
-import org.apache.activemq.openwire.generator.TypeUtils;
+import org.apache.activemq.openwire.generator.OpenWireTypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * Generator that create a set of OpenWire command marshalers that can
  * handle all OpenWire versions.
  */
-public class UniversalMarshallerGenerator implements AbstractGenerator {
+public class UniversalMarshallerGenerator implements Generator {
 
     private static final Logger LOG = LoggerFactory.getLogger(UniversalMarshallerGenerator.class);
 
@@ -42,12 +42,12 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
     private String baseDir;
 
     @Override
-    public void run(Set<Class<?>> openWireTypes) throws Exception {
+    public void run(List<OpenWireTypeDescriptor> typeDescriptors) throws Exception {
         File outputFolder = GeneratorUtils.createDestination(getBaseDir(), codecPackage);
         LOG.info("Output location for generated marshalers is: {}", outputFolder.getAbsolutePath());
 
-        for (Class<?> openWireType : openWireTypes) {
-            LOG.debug("Generating marshaller for type: {}", openWireType.getName());
+        for (OpenWireTypeDescriptor openWireType : typeDescriptors) {
+            LOG.debug("Generating marshaller for type: {}", openWireType.getTypeName());
             processClass(openWireType, outputFolder);
         }
     }
@@ -78,8 +78,8 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
 
     //----- Implementation ---------------------------------------------------//
 
-    protected void processClass(Class<?> openWireType, File outputFolder) throws Exception {
-        File marshalerFile = new File(outputFolder, openWireType.getSimpleName() + ".java");
+    protected void processClass(OpenWireTypeDescriptor openWireType, File outputFolder) throws Exception {
+        File marshalerFile = new File(outputFolder, openWireType.getTypeName() + ".java");
 
         try (PrintWriter out = new PrintWriter(new FileWriter(marshalerFile));) {
             LOG.debug("Output file: {}", marshalerFile.getAbsolutePath());
@@ -87,14 +87,21 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
             writePreamble(out, openWireType);
             writeClassDefinition(out, openWireType);
             writeTypeSupportMethods(out, openWireType);
+
             writeTightUnmarshal(out, openWireType);
+            writeTightMarshal1(out, openWireType);
+            writeTightMarshal2(out, openWireType);
+
+            writeLooseMarshal(out, openWireType);
+            writeLooseUnmarshal(out, openWireType);
+
             writeClassClosure(out, openWireType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void writePreamble(PrintWriter out, Class<?> openWireType) {
+    private void writePreamble(PrintWriter out, OpenWireTypeDescriptor openWireType) {
         out.println("package " + getCodecPackage() + ";");
         out.println("");
         out.println("import java.io.DataInput;");
@@ -102,17 +109,17 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
         out.println("import java.io.IOException;");
         out.println("");
         out.println("import " + getCodecPackage() + ".*;");
-        out.println("import " + openWireType.getPackage().getName() + ".*;");
+        out.println("import " + openWireType.getPackageName() + ".*;");
         out.println("");
     }
 
-    private void writeClassDefinition(PrintWriter out, Class<?> openWireType) {
-        String abstractModifier = TypeUtils.getAbstractModifier(openWireType);
+    private void writeClassDefinition(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        String abstractModifier = openWireType.isAbstract() ? "abstract " : "";
         String className = getClassName(openWireType);
         String baseClassName = getBaseClassName(openWireType);
 
         out.println("/**");
-        out.println(" * Marshalling code for Open Wire for " + openWireType.getName() + "");
+        out.println(" * Marshalling code for Open Wire for " + openWireType.getTypeName() + "");
         out.println(" *");
         out.println(" * NOTE!: This file is auto generated - do not modify!");
         out.println(" *");
@@ -121,83 +128,208 @@ public class UniversalMarshallerGenerator implements AbstractGenerator {
         out.println("");
     }
 
-    private void writeTypeSupportMethods(PrintWriter out, Class<?> openWireType) {
-        if (!TypeUtils.isAbstract(openWireType)) {
+    private void writeTypeSupportMethods(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        if (!openWireType.isAbstract()) {
             out.println("    /**");
             out.println("     * Return the type of Data Structure handled by this Marshaler");
             out.println("     *");
             out.println("     * @return short representation of the type data structure");
             out.println("     */");
             out.println("    public byte getDataStructureType() {");
-            out.println("        return " + openWireType.getSimpleName() + ".DATA_STRUCTURE_TYPE;");
+            out.println("        return " + openWireType.getTypeName() + ".DATA_STRUCTURE_TYPE;");
             out.println("    }");
             out.println("    ");
             out.println("    /**");
             out.println("     * @return a new instance of the managed type.");
             out.println("     */");
             out.println("    public DataStructure createObject() {");
-            out.println("        return new " + openWireType.getSimpleName() + "();");
+            out.println("        return new " + openWireType.getTypeName() + "();");
             out.println("    }");
             out.println("");
         }
     }
 
-    private void writeTightUnmarshal(PrintWriter out, Class<?> openWireType) {
+    private void writeTightUnmarshal(PrintWriter out, OpenWireTypeDescriptor openWireType) {
         out.println("    /**");
         out.println("     * Un-marshal an object instance from the data input stream");
         out.println("     *");
-        out.println("     * @param o the object to un-marshal");
+        out.println("     * @param wireFormat the OpenWireFormat instance to use");
+        out.println("     * @param target the object to un-marshal");
         out.println("     * @param dataIn the data input stream to build the object from");
-        out.println("     * @throws IOException");
+        out.println("     * @param bs the boolean stream where the type's booleans were marshaled");
+        out.println("     *");
+        out.println("     * @throws IOException if an error occurs while reading the data");
         out.println("     */");
-        out.println("    public void tightUnmarshal(OpenWireFormat wireFormat, Object o, DataInput dataIn, BooleanStream bs) throws IOException {");
-        out.println("        super.tightUnmarshal(wireFormat, o, dataIn, bs);");
+        out.println("    public void tightUnmarshal(OpenWireFormat wireFormat, Object target, DataInput dataIn, BooleanStream bs) throws IOException {");
+        out.println("        super.tightUnmarshal(wireFormat, target, dataIn, bs);");
 
-//        if (!getProperties().isEmpty()) {
-//            out.println("");
-//            out.println("        " + getJclass().getSimpleName() + " info = (" + getJclass().getSimpleName() + ")o;");
-//        }
-//
-//        if (isMarshallerAware()) {
-//            out.println("");
-//            out.println("        info.beforeUnmarshall(wireFormat);");
-//            out.println("        ");
-//        }
-//
+        if (openWireType.hasProperties()) {
+            out.println("");
+            out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") target;");
+        }
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.beforeUnmarshall(wireFormat);");
+        }
+
 //        generateTightUnmarshalBody(out);
-//
-//        if (isMarshallerAware()) {
-//            out.println("");
-//            out.println("        info.afterUnmarshall(wireFormat);");
-//        }
-//
-//        out.println("");
-//        out.println("    }");
-//        out.println("");
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.afterUnmarshall(wireFormat);");
+        }
+
+        out.println("    }");
+        out.println("");
     }
 
-    private void writeClassClosure(PrintWriter out, Class<?> openWireType) {
+    private void writeTightMarshal1(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        out.println("    /**");
+        out.println("     * Write the booleans that this object uses to a BooleanStream");
+        out.println("     *");
+        out.println("     * @param wireFormat the OpenWireFormat instance to use");
+        out.println("     * @param source the object to marshal");
+        out.println("     * @param bs the boolean stream where the type's booleans are written");
+        out.println("     *");
+        out.println("     * @throws IOException if an error occurs while writing the data");
+        out.println("     */");
+        out.println("    public int tightMarshal1(OpenWireFormat wireFormat, Object source, BooleanStream bs) throws IOException {");
+
+        if (openWireType.hasProperties()) {
+            out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") source;");
+        }
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.beforeMarshall(wireFormat);");
+            out.println("");
+        }
+
+        out.println("        int rc = super.tightMarshal1(wireFormat, source, bs);");
+
+        int baseSize = 0; // TODO generateTightMarshal1Body(out);
+
+        out.println("");
+        out.println("        return rc + " + baseSize + ";");
+        out.println("    }");
+        out.println("");
+    }
+
+    private void writeTightMarshal2(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        out.println("    /**");
+        out.println("     * Write a object instance to data output stream");
+        out.println("     *");
+        out.println("     * @param wireFormat the OpenWireFormat instance to use");
+        out.println("     * @param source the object to marshal");
+        out.println("     * @param dataOut the DataOut where the properties are written");
+        out.println("     * @param bs the boolean stream where the type's booleans are written");
+        out.println("     *");
+        out.println("     * @throws IOException if an error occurs while writing the data");
+        out.println("     */");
+        out.println("    public void tightMarshal2(OpenWireFormat wireFormat, Object source, DataOutput dataOut, BooleanStream bs) throws IOException {");
+        out.println("        super.tightMarshal2(wireFormat, source, dataOut, bs);");
+
+        if (openWireType.hasProperties()) {
+            out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") source;");
+        }
+
+        // TODO generateTightMarshal2Body(out);
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.afterMarshall(wireFormat);");
+        }
+
+        out.println("    }");
+        out.println("");
+    }
+
+    private void writeLooseUnmarshal(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        out.println("    /**");
+        out.println("     * Un-marshal an object instance from the data input stream");
+        out.println("     *");
+        out.println("     * @param target the object to un-marshal");
+        out.println("     * @param dataIn the data input stream to build the object from");
+        out.println("     *");
+        out.println("     * @throws IOException if an error occurs while writing the data");
+        out.println("     */");
+        out.println("    public void looseUnmarshal(OpenWireFormat wireFormat, Object target, DataInput dataIn) throws IOException {");
+        out.println("        super.looseUnmarshal(wireFormat, o, dataIn);");
+
+        if (openWireType.hasProperties()) {
+            out.println("");
+            out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") target;");
+        }
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.beforeUnmarshall(wireFormat);");
+        }
+
+        // TODO generateLooseUnmarshalBody(out);
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.afterUnmarshall(wireFormat);");
+        }
+
+        out.println("");
+        out.println("    }");
+        out.println("");
+    }
+
+    private void writeLooseMarshal(PrintWriter out, OpenWireTypeDescriptor openWireType) {
+        out.println("    /**");
+        out.println("     * Write the object to the output using loose marshaling.");
+        out.println("     *");
+        out.println("     * @throws IOException if an error occurs while writing the data");
+        out.println("     */");
+        out.println("    public void looseMarshal(OpenWireFormat wireFormat, Object source, DataOutput dataOut) throws IOException {");
+
+        if (openWireType.hasProperties()) {
+            out.println("");
+            out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") source;");
+        }
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.beforeMarshall(wireFormat);");
+        }
+
+        out.println("");
+        out.println("        super.looseMarshal(wireFormat, o, dataOut);");
+
+        // TODO generateLooseMarshalBody(out);
+
+        if (openWireType.isMarshalAware()) {
+            out.println("");
+            out.println("        info.afterMarshall(wireFormat);");
+        }
+
+        out.println("    }");
+        out.println("");
+    }
+
+    private void writeClassClosure(PrintWriter out, OpenWireTypeDescriptor openWireType) {
         out.println("}");
     }
 
     //----- Helper Methods for Code Generation -------------------------------//
 
-    private String getClassName(Class<?> openWireType) {
-        return openWireType.getSimpleName() + "Marshaller";
+    private String getClassName(OpenWireTypeDescriptor openWireType) {
+        return openWireType.getTypeName() + "Marshaller";
     }
 
-    private String getBaseClassName(Class<?> openWireType) {
+    private String getBaseClassName(OpenWireTypeDescriptor openWireType) {
         String answer = "BaseDataStreamMarshaller";
 
-        Class<?> superClass = openWireType.getSuperclass();
-        if (superClass != null) {
-            String superName = superClass.getSimpleName();
-            if (!superName.equals("Object") &&
-                !superName.equals("JNDIBaseStorable") &&
-                !superName.equals("DataStructureSupport")) {
+        String superName = openWireType.getSuperClass();
+        if (!superName.equals("Object") &&
+            !superName.equals("JNDIBaseStorable") &&
+            !superName.equals("DataStructureSupport")) {
 
-                answer = superName + "Marshaller";
-            }
+            answer = superName + "Marshaller";
         }
 
         return answer;
