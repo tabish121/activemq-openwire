@@ -42,6 +42,13 @@ public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDe
     }
 
     /**
+     * @return the first OpenWire version this property appeared in
+     */
+    public int getVersion() {
+        return propertyAnnotation.version();
+    }
+
+    /**
      * @return the position in the marshaling process this type should occupy.
      */
     public int getMarshalingSequence() {
