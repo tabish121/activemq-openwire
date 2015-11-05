@@ -42,10 +42,13 @@ public class OpenWireTypeDescriptor {
 
         Set<Field> fields = GeneratorUtils.finalOpenWireProperties(openWireType);
         for (Field field : fields) {
-            properties.add(new OpenWirePropertyDescriptor(field));
+            // Only track fields from the given type and not its super types.
+            if (field.getDeclaringClass().equals(openWireType)) {
+                properties.add(new OpenWirePropertyDescriptor(field));
+            }
         }
 
-        // Ensure ording my marshaler sequence.
+        // Ensure ordering my marshaler sequence.
         Collections.sort(properties);
 
         this.properties = Collections.unmodifiableList(properties);
