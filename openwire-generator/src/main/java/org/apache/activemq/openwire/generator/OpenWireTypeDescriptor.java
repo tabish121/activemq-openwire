@@ -39,10 +39,14 @@ public class OpenWireTypeDescriptor {
         this.typeAnnotation = openWireType.getAnnotation(OpenWireType.class);
 
         List<OpenWirePropertyDescriptor> properties = new ArrayList<OpenWirePropertyDescriptor>();
+
         Set<Field> fields = GeneratorUtils.finalOpenWireProperties(openWireType);
         for (Field field : fields) {
             properties.add(new OpenWirePropertyDescriptor(field));
         }
+
+        // Ensure ording my marshaler sequence.
+        Collections.sort(properties);
 
         this.properties = Collections.unmodifiableList(properties);
     }

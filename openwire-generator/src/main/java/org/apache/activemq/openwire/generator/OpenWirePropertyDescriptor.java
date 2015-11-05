@@ -24,7 +24,7 @@ import org.apache.activemq.openwire.annotations.OpenWireProperty;
  * Wraps a property of an OpenWire protocol type to provide support
  * for generating code to handle that property.
  */
-public class OpenWirePropertyDescriptor {
+public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDescriptor> {
 
     private final Field openWireProperty;
     private final OpenWireProperty propertyAnnotation;
@@ -114,5 +114,10 @@ public class OpenWirePropertyDescriptor {
         }
 
         return type.getSuperclass() != null && isThrowable(type.getSuperclass());
+    }
+
+    @Override
+    public int compareTo(OpenWirePropertyDescriptor other) {
+        return Integer.compare(getMarshalingSequence(), other.getMarshalingSequence());
     }
 }
