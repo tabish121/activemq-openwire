@@ -80,7 +80,7 @@ public class UniversalMarshallerGenerator implements Generator {
     //----- Implementation ---------------------------------------------------//
 
     protected void processClass(OpenWireTypeDescriptor openWireType, File outputFolder) throws Exception {
-        final File marshalerFile = new File(outputFolder, openWireType.getTypeName() + ".java");
+        final File marshalerFile = new File(outputFolder, getClassName(openWireType) + ".java");
 
         try (PrintWriter out = new PrintWriter(new FileWriter(marshalerFile));) {
             LOG.debug("Output file: {}", marshalerFile.getAbsolutePath());
