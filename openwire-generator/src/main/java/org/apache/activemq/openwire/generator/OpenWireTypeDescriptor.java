@@ -16,7 +16,12 @@
  */
 package org.apache.activemq.openwire.generator;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.activemq.openwire.annotations.OpenWireType;
 
@@ -27,10 +32,19 @@ public class OpenWireTypeDescriptor {
 
     private final Class<?> openWireType;
     private final OpenWireType typeAnnotation;
+    private final List<OpenWirePropertyDescriptor> properties;
 
-    public OpenWireTypeDescriptor(Class<?> openWireType) {
+    public OpenWireTypeDescriptor(Class<?> openWireType) throws Exception {
         this.openWireType = openWireType;
         this.typeAnnotation = openWireType.getAnnotation(OpenWireType.class);
+
+        List<OpenWirePropertyDescriptor> properties = new ArrayList<OpenWirePropertyDescriptor>();
+        Set<Field> fields = GeneratorUtils.finalOpenWireProperties(openWireType);
+        for (Field field : fields) {
+            properties.add(new OpenWirePropertyDescriptor(field));
+        }
+
+        this.properties = Collections.unmodifiableList(properties);
     }
 
     /**
@@ -60,13 +74,6 @@ public class OpenWireTypeDescriptor {
     }
 
     /**
-     * @return true if this type has properties to marshal and unmarshal.
-     */
-    public boolean hasProperties() {
-        return false;  // TODO
-    }
-
-    /**
      * @return the first version this type was introduced in.
      */
     public int getVersion() {
@@ -92,5 +99,19 @@ public class OpenWireTypeDescriptor {
      */
     public boolean isAbstract() {
         return Modifier.isAbstract(openWireType.getModifiers());
+    }
+
+    /**
+     * @return true if this type has properties to marshal and unmarshal.
+     */
+    public boolean hasProperties() {
+        return !properties.isEmpty();
+    }
+
+    /**
+     * @return the properties of this described OpenWire type.
+     */
+    public List<OpenWirePropertyDescriptor> getProperties() {
+        return properties;
     }
 }

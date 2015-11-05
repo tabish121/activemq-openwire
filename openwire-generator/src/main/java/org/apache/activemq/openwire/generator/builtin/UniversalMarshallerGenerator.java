@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.activemq.openwire.generator.Generator;
 import org.apache.activemq.openwire.generator.GeneratorUtils;
+import org.apache.activemq.openwire.generator.OpenWirePropertyDescriptor;
 import org.apache.activemq.openwire.generator.OpenWireTypeDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,10 @@ public class UniversalMarshallerGenerator implements Generator {
 
     @Override
     public void run(List<OpenWireTypeDescriptor> typeDescriptors) throws Exception {
-        File outputFolder = GeneratorUtils.createDestination(getBaseDir(), codecPackage);
+        final File outputFolder = GeneratorUtils.createDestination(getBaseDir(), codecPackage);
         LOG.info("Output location for generated marshalers is: {}", outputFolder.getAbsolutePath());
 
-        for (OpenWireTypeDescriptor openWireType : typeDescriptors) {
+        for (final OpenWireTypeDescriptor openWireType : typeDescriptors) {
             LOG.debug("Generating marshaller for type: {}", openWireType.getTypeName());
             processClass(openWireType, outputFolder);
         }
@@ -79,7 +80,7 @@ public class UniversalMarshallerGenerator implements Generator {
     //----- Implementation ---------------------------------------------------//
 
     protected void processClass(OpenWireTypeDescriptor openWireType, File outputFolder) throws Exception {
-        File marshalerFile = new File(outputFolder, openWireType.getTypeName() + ".java");
+        final File marshalerFile = new File(outputFolder, openWireType.getTypeName() + ".java");
 
         try (PrintWriter out = new PrintWriter(new FileWriter(marshalerFile));) {
             LOG.debug("Output file: {}", marshalerFile.getAbsolutePath());
@@ -96,7 +97,7 @@ public class UniversalMarshallerGenerator implements Generator {
             writeLooseUnmarshal(out, openWireType);
 
             writeClassClosure(out, openWireType);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -114,9 +115,9 @@ public class UniversalMarshallerGenerator implements Generator {
     }
 
     private void writeClassDefinition(PrintWriter out, OpenWireTypeDescriptor openWireType) {
-        String abstractModifier = openWireType.isAbstract() ? "abstract " : "";
-        String className = getClassName(openWireType);
-        String baseClassName = getBaseClassName(openWireType);
+        final String abstractModifier = openWireType.isAbstract() ? "abstract " : "";
+        final String className = getClassName(openWireType);
+        final String baseClassName = getBaseClassName(openWireType);
 
         out.println("/**");
         out.println(" * Marshalling code for Open Wire for " + openWireType.getTypeName() + "");
@@ -173,7 +174,66 @@ public class UniversalMarshallerGenerator implements Generator {
             out.println("        info.beforeUnmarshall(wireFormat);");
         }
 
-//        generateTightUnmarshalBody(out);
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final int size = property.getSize();
+            final String typeName = property.getTypeName();
+            final String setter = property.getSetterName();
+
+            if (property.isArray() && !typeName.equals("byte[]")) {
+                final String arrayType = property.getType().getComponentType().getSimpleName();
+
+                if (size > 0) {
+                    out.println("        {");
+                    out.println("            " + arrayType + " value[] = new " + arrayType + "[" + size + "];");
+                    out.println("            " + "for (int i = 0; i < " + size + "; i++) {");
+                    out.println("                value[i] = (" + arrayType + ") tightUnmarsalNestedObject(wireFormat,dataIn, bs);");
+                    out.println("            }");
+                    out.println("            info." + setter + "(value);");
+                    out.println("        }");
+                } else {
+                    out.println("        if (bs.readBoolean()) {");
+                    out.println("            short size = dataIn.readShort();");
+                    out.println("            " + arrayType + " value[] = new " + arrayType + "[size];");
+                    out.println("            for (int i = 0; i < size; i++) {");
+                    out.println("                value[i] = (" + arrayType + ") tightUnmarsalNestedObject(wireFormat,dataIn, bs);");
+                    out.println("            }");
+                    out.println("            info." + setter + "(value);");
+                    out.println("        } else {");
+                    out.println("            info." + setter + "(null);");
+                    out.println("        }");
+                }
+            } else {
+                if (typeName.equals("boolean")) {
+                    out.println("        info." + setter + "(bs.readBoolean());");
+                } else if (typeName.equals("byte")) {
+                    out.println("        info." + setter + "(dataIn.readByte());");
+                } else if (typeName.equals("char")) {
+                    out.println("        info." + setter + "(dataIn.readChar());");
+                } else if (typeName.equals("short")) {
+                    out.println("        info." + setter + "(dataIn.readShort());");
+                } else if (typeName.equals("int")) {
+                    out.println("        info." + setter + "(dataIn.readInt());");
+                } else if (typeName.equals("long")) {
+                    out.println("        info." + setter + "(tightUnmarshalLong(wireFormat, dataIn, bs));");
+                } else if (typeName.equals("String")) {
+                    out.println("        info." + setter + "(tightUnmarshalString(dataIn, bs));");
+                } else if (typeName.equals("byte[]")) {
+                    if (size >= 0) {
+                        out.println("        info." + setter + "(tightUnmarshalConstByteArray(dataIn, bs, " + size + "));");
+                    } else {
+                        out.println("        info." + setter + "(tightUnmarshalByteArray(dataIn, bs));");
+                    }
+                } else if (typeName.equals("ByteSequence")) {
+                    out.println("        info." + setter + "(tightUnmarshalByteSequence(dataIn, bs));");
+                } else if (property.isThrowable()) {
+                    out.println("        info." + setter + "((" + property.getTypeName() + ") tightUnmarsalThrowable(wireFormat, dataIn, bs));");
+                } else if (property.isCached()) {
+                    out.println("        info." + setter + "((" + property.getTypeName() + ") tightUnmarsalCachedObject(wireFormat, dataIn, bs));");
+                } else {
+                    out.println("        info." + setter + "((" + property.getTypeName() + ") tightUnmarsalNestedObject(wireFormat, dataIn, bs));");
+                }
+            }
+        }
 
         if (openWireType.isMarshalAware()) {
             out.println("");
@@ -203,12 +263,55 @@ public class UniversalMarshallerGenerator implements Generator {
         if (openWireType.isMarshalAware()) {
             out.println("");
             out.println("        info.beforeMarshall(wireFormat);");
-            out.println("");
         }
 
+        out.println("");
         out.println("        int rc = super.tightMarshal1(wireFormat, source, bs);");
 
-        int baseSize = 0; // TODO generateTightMarshal1Body(out);
+        int baseSize = 0;
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final int size = property.getSize();
+            final String typeName = property.getTypeName();
+            final String getter = "info." + property.getGetterName() + "()";
+
+            if (typeName.equals("boolean")) {
+                out.println("        bs.writeBoolean(" + getter + ");");
+            } else if (typeName.equals("byte")) {
+                baseSize += 1;
+            } else if (typeName.equals("char")) {
+                baseSize += 2;
+            } else if (typeName.equals("short")) {
+                baseSize += 2;
+            } else if (typeName.equals("int")) {
+                baseSize += 4;
+            } else if (typeName.equals("long")) {
+                out.println("        rc+=tightMarshalLong1(wireFormat, " + getter + ", bs);");
+            } else if (typeName.equals("String")) {
+                out.println("        rc += tightMarshalString1(" + getter + ", bs);");
+            } else if (typeName.equals("byte[]")) {
+                if (size > 0) {
+                    out.println("        rc += tightMarshalConstByteArray1(" + getter + ", bs, " + size + ");");
+                } else {
+                    out.println("        rc += tightMarshalByteArray1(" + getter + ", bs);");
+                }
+            } else if (typeName.equals("ByteSequence")) {
+                out.println("        rc += tightMarshalByteSequence1(" + getter + ", bs);");
+            } else if (property.isArray()) {
+                if (size > 0) {
+                    out.println("        rc += tightMarshalObjectArrayConstSize1(wireFormat, " + getter + ", bs, " + size + ");");
+                } else {
+                    out.println("        rc += tightMarshalObjectArray1(wireFormat, " + getter + ", bs);");
+                }
+            } else if (property.isThrowable()) {
+                out.println("        rc += tightMarshalThrowable1(wireFormat, " + getter + ", bs);");
+            } else {
+                if (property.isCached()) {
+                    out.println("        rc += tightMarshalCachedObject1(wireFormat, (DataStructure)" + getter + ", bs);");
+                } else {
+                    out.println("        rc += tightMarshalNestedObject1(wireFormat, (DataStructure)" + getter + ", bs);");
+                }
+            }
+        }
 
         out.println("");
         out.println("        return rc + " + baseSize + ";");
@@ -231,10 +334,54 @@ public class UniversalMarshallerGenerator implements Generator {
         out.println("        super.tightMarshal2(wireFormat, source, dataOut, bs);");
 
         if (openWireType.hasProperties()) {
+            out.println("");
             out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") source;");
+            out.println("");
         }
 
-        // TODO generateTightMarshal2Body(out);
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final int size = property.getSize();
+            final String typeName = property.getTypeName();
+            final String getter = "info." + property.getGetterName() + "()";
+
+            if (typeName.equals("boolean")) {
+                out.println("        bs.readBoolean();");
+            } else if (typeName.equals("byte")) {
+                out.println("        dataOut.writeByte(" + getter + ");");
+            } else if (typeName.equals("char")) {
+                out.println("        dataOut.writeChar(" + getter + ");");
+            } else if (typeName.equals("short")) {
+                out.println("        dataOut.writeShort(" + getter + ");");
+            } else if (typeName.equals("int")) {
+                out.println("        dataOut.writeInt(" + getter + ");");
+            } else if (typeName.equals("long")) {
+                out.println("        tightMarshalLong2(wireFormat, " + getter + ", dataOut, bs);");
+            } else if (typeName.equals("String")) {
+                out.println("        tightMarshalString2(" + getter + ", dataOut, bs);");
+            } else if (typeName.equals("byte[]")) {
+                if (size > 0) {
+                    out.println("        tightMarshalConstByteArray2(" + getter + ", dataOut, bs, " + size + ");");
+                } else {
+                    out.println("        tightMarshalByteArray2(" + getter + ", dataOut, bs);");
+                }
+            } else if (typeName.equals("ByteSequence")) {
+                out.println("        tightMarshalByteSequence2(" + getter + ", dataOut, bs);");
+            } else if (property.isArray()) {
+                if (size > 0) {
+                    out.println("        tightMarshalObjectArrayConstSize2(wireFormat, " + getter + ", dataOut, bs, " + size + ");");
+                } else {
+                    out.println("        tightMarshalObjectArray2(wireFormat, " + getter + ", dataOut, bs);");
+                }
+            } else if (property.isThrowable()) {
+                out.println("        tightMarshalThrowable2(wireFormat, " + getter + ", dataOut, bs);");
+            } else {
+                if (property.isCached()) {
+                    out.println("        tightMarshalCachedObject2(wireFormat, (DataStructure)" + getter + ", dataOut, bs);");
+                } else {
+                    out.println("        tightMarshalNestedObject2(wireFormat, (DataStructure)" + getter + ", dataOut, bs);");
+                }
+            }
+        }
 
         if (openWireType.isMarshalAware()) {
             out.println("");
@@ -267,16 +414,73 @@ public class UniversalMarshallerGenerator implements Generator {
             out.println("        info.beforeUnmarshall(wireFormat);");
         }
 
-        // TODO generateLooseUnmarshalBody(out);
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final int size = property.getSize();
+            final String typeName = property.getTypeName();
+            final String setter = "info." + property.getSetterName();
+
+            if (property.isArray() && !typeName.equals("byte[]")) {
+                final String arrayType = property.getType().getComponentType().getSimpleName();
+
+                if (size > 0) {
+                    out.println("        {");
+                    out.println("            " + arrayType + " value[] = new " + arrayType + "[" + size + "];");
+                    out.println("            " + "for (int i = 0; i < " + size + "; i++) {");
+                    out.println("                value[i] = (" + arrayType + ") looseUnmarsalNestedObject(wireFormat,dataIn);");
+                    out.println("            }");
+                    out.println("            info." + setter + "(value);");
+                    out.println("        }");
+                } else {
+                    out.println("        if (dataIn.readBoolean()) {");
+                    out.println("            short size = dataIn.readShort();");
+                    out.println("            " + arrayType + " value[] = new " + arrayType + "[size];");
+                    out.println("            for (int i = 0; i < size; i++) {");
+                    out.println("                value[i] = (" + arrayType + ") looseUnmarsalNestedObject(wireFormat,dataIn);");
+                    out.println("            }");
+                    out.println("            info." + setter + "(value);");
+                    out.println("        } else {");
+                    out.println("            info." + setter + "(null);");
+                    out.println("        }");
+                }
+            } else {
+                if (typeName.equals("boolean")) {
+                    out.println("        info." + setter + "(dataIn.readBoolean());");
+                } else if (typeName.equals("byte")) {
+                    out.println("        info." + setter + "(dataIn.readByte());");
+                } else if (typeName.equals("char")) {
+                    out.println("        info." + setter + "(dataIn.readChar());");
+                } else if (typeName.equals("short")) {
+                    out.println("        info." + setter + "(dataIn.readShort());");
+                } else if (typeName.equals("int")) {
+                    out.println("        info." + setter + "(dataIn.readInt());");
+                } else if (typeName.equals("long")) {
+                    out.println("        info." + setter + "(looseUnmarshalLong(wireFormat, dataIn));");
+                } else if (typeName.equals("String")) {
+                    out.println("        info." + setter + "(looseUnmarshalString(dataIn));");
+                } else if (typeName.equals("byte[]")) {
+                    if (size > 0) {
+                        out.println("        info." + setter + "(looseUnmarshalConstByteArray(dataIn, " + size + "));");
+                    } else {
+                        out.println("        info." + setter + "(looseUnmarshalByteArray(dataIn));");
+                    }
+                } else if (typeName.equals("ByteSequence")) {
+                    out.println("        info." + setter + "(looseUnmarshalByteSequence(dataIn));");
+                } else if (property.isThrowable()) {
+                    out.println("        info." + setter + "((" + typeName + ") looseUnmarsalThrowable(wireFormat, dataIn));");
+                } else if (property.isCached()) {
+                    out.println("        info." + setter + "((" + typeName + ") looseUnmarsalCachedObject(wireFormat, dataIn));");
+                } else {
+                    out.println("        info." + setter + "((" + typeName + ") looseUnmarsalNestedObject(wireFormat, dataIn));");
+                }
+            }
+        }
 
         if (openWireType.isMarshalAware()) {
             out.println("");
             out.println("        info.afterUnmarshall(wireFormat);");
         }
 
-        out.println("");
         out.println("    }");
-        out.println("");
     }
 
     private void writeLooseMarshal(PrintWriter out, OpenWireTypeDescriptor openWireType) {
@@ -288,7 +492,6 @@ public class UniversalMarshallerGenerator implements Generator {
         out.println("    public void looseMarshal(OpenWireFormat wireFormat, Object source, DataOutput dataOut) throws IOException {");
 
         if (openWireType.hasProperties()) {
-            out.println("");
             out.println("        " + openWireType.getTypeName() + " info = (" + openWireType.getTypeName() + ") source;");
         }
 
@@ -300,7 +503,49 @@ public class UniversalMarshallerGenerator implements Generator {
         out.println("");
         out.println("        super.looseMarshal(wireFormat, o, dataOut);");
 
-        // TODO generateLooseMarshalBody(out);
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final int size = property.getSize();
+            final String typeName = property.getTypeName();
+            final String getter = "info." + property.getGetterName() + "()";
+
+            if (typeName.equals("boolean")) {
+                out.println("        dataOut.writeBoolean(" + getter + ");");
+            } else if (typeName.equals("byte")) {
+                out.println("        dataOut.writeByte(" + getter + ");");
+            } else if (typeName.equals("char")) {
+                out.println("        dataOut.writeChar(" + getter + ");");
+            } else if (typeName.equals("short")) {
+                out.println("        dataOut.writeShort(" + getter + ");");
+            } else if (typeName.equals("int")) {
+                out.println("        dataOut.writeInt(" + getter + ");");
+            } else if (typeName.equals("long")) {
+                out.println("        looseMarshalLong(wireFormat, " + getter + ", dataOut);");
+            } else if (typeName.equals("String")) {
+                out.println("        looseMarshalString(" + getter + ", dataOut);");
+            } else if (typeName.equals("byte[]")) {
+                if (size > 0) {
+                    out.println("        looseMarshalConstByteArray(wireFormat, " + getter + ", dataOut, " + size + ");");
+                } else {
+                    out.println("        looseMarshalByteArray(wireFormat, " + getter + ", dataOut);");
+                }
+            } else if (typeName.equals("ByteSequence")) {
+                out.println("        looseMarshalByteSequence(wireFormat, " + getter + ", dataOut);");
+            } else if (property.isArray()) {
+                if (size > 0) {
+                    out.println("        looseMarshalObjectArrayConstSize(wireFormat, " + getter + ", dataOut, " + size + ");");
+                } else {
+                    out.println("        looseMarshalObjectArray(wireFormat, " + getter + ", dataOut);");
+                }
+            } else if (property.isThrowable()) {
+                out.println("        looseMarshalThrowable(wireFormat, " + getter + ", dataOut);");
+            } else {
+                if (property.isCached()) {
+                    out.println("        looseMarshalCachedObject(wireFormat, (DataStructure)" + getter + ", dataOut);");
+                } else {
+                    out.println("        looseMarshalNestedObject(wireFormat, (DataStructure)" + getter + ", dataOut);");
+                }
+            }
+        }
 
         if (openWireType.isMarshalAware()) {
             out.println("");
@@ -324,7 +569,7 @@ public class UniversalMarshallerGenerator implements Generator {
     private String getBaseClassName(OpenWireTypeDescriptor openWireType) {
         String answer = "BaseDataStreamMarshaller";
 
-        String superName = openWireType.getSuperClass();
+        final String superName = openWireType.getSuperClass();
         if (!superName.equals("Object") &&
             !superName.equals("JNDIBaseStorable") &&
             !superName.equals("DataStructureSupport")) {

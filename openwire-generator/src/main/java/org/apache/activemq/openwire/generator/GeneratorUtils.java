@@ -18,9 +18,12 @@ package org.apache.activemq.openwire.generator;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Set;
 
+import org.apache.activemq.openwire.annotations.OpenWireProperty;
 import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 
 /**
@@ -29,6 +32,7 @@ import org.reflections.Reflections;
 public class GeneratorUtils {
 
     public static final String OPENWIRE_TYPES_PACKAGE = "org.apache.activemq.openwire.commands";
+    public static final Reflections REFLECTIONS = new Reflections(OPENWIRE_TYPES_PACKAGE);
 
     /**
      * Returns the set of OpenWire types annotated with the OpenWireType marker.
@@ -38,12 +42,31 @@ public class GeneratorUtils {
      * @throws Exception if an error occurs reading the types.
      */
     public static Set<Class<?>> findOpenWireTypes() throws Exception {
-        Reflections reflections = new Reflections(OPENWIRE_TYPES_PACKAGE);
+        final Reflections reflections = new Reflections(OPENWIRE_TYPES_PACKAGE);
 
-        Set<Class<?>> protocolTypes =
+        final Set<Class<?>> protocolTypes =
             reflections.getTypesAnnotatedWith(OpenWireType.class);
 
         return protocolTypes;
+    }
+
+    /**
+     * Given an OpenWire protocol object, find and return all the fields in the object
+     * that are annotated with the OpenWireProperty marker.
+     *
+     * @param openWireType
+     *      the OpenWire protocol object to query for property values.
+     *
+     * @return a {@code Set<Field>} containing the annotated properties from the given object.
+     *
+     * @throws Exception if an error occurs while scanning for properties.
+     */
+    public static Set<Field> finalOpenWireProperties(Class<?> openWireType) throws Exception {
+        @SuppressWarnings("unchecked")
+        final Set<Field> properties =
+            ReflectionUtils.getAllFields(openWireType, ReflectionUtils.withAnnotation(OpenWireProperty.class));
+
+        return properties;
     }
 
     /**
@@ -61,7 +84,7 @@ public class GeneratorUtils {
     public static File createDestination(String base, String targetPackage) throws Exception {
         targetPackage = targetPackage.replace(".", File.separator);
 
-        File outputFolder = new File(base, targetPackage);
+        final File outputFolder = new File(base, targetPackage);
         if (!outputFolder.exists()) {
             outputFolder.mkdirs();
         }
@@ -93,5 +116,4 @@ public class GeneratorUtils {
         out.println(" * limitations under the License.");
         out.println(" */");
     }
-
 }

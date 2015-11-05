@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.openwire.generator;
 
+import java.lang.reflect.Field;
+
 import org.apache.activemq.openwire.annotations.OpenWireProperty;
 
 /**
@@ -24,18 +26,19 @@ import org.apache.activemq.openwire.annotations.OpenWireProperty;
  */
 public class OpenWirePropertyDescriptor {
 
-    private final Class<?> openWireProperty;
-    private OpenWireProperty propertyAnnotation;
+    private final Field openWireProperty;
+    private final OpenWireProperty propertyAnnotation;
 
-    public OpenWirePropertyDescriptor(Class<?> openWireProperty) {
+    public OpenWirePropertyDescriptor(Field openWireProperty) {
         this.openWireProperty = openWireProperty;
+        this.propertyAnnotation = openWireProperty.getAnnotation(OpenWireProperty.class);
     }
 
     /**
      * @return the declared name of this property.
      */
     public String getPropertyName() {
-        return openWireProperty.getSimpleName();
+        return openWireProperty.getName();
     }
 
     /**
@@ -43,5 +46,73 @@ public class OpenWirePropertyDescriptor {
      */
     public int getMarshalingSequence() {
         return propertyAnnotation.sequence();
+    }
+
+    /**
+     * @return the defined size attribute for this property.
+     */
+    public int getSize() {
+        return propertyAnnotation.size();
+    }
+
+    /**
+     * @return
+     */
+    public boolean isCached() {
+        return propertyAnnotation.cached();
+    }
+
+    /**
+     * @return true if the field is an array type.
+     */
+    public boolean isArray() {
+        return openWireProperty.getType().isArray();
+    }
+
+    /**
+     * @return true if this property is {@link Throwable} or a descendant of {@link Throwable}.
+     */
+    public boolean isThrowable() {
+        return isThrowable(getType());
+    }
+
+    /**
+     * @return the Class that represents this properties type.
+     */
+    public Class<?> getType() {
+        return openWireProperty.getType();
+    }
+
+    /**
+     * @return the name of this property
+     */
+    public String getTypeName() {
+        return openWireProperty.getType().getSimpleName();
+    }
+
+    /**
+     * @return the name of the set method in the OpenWireType that handles this property.
+     */
+    public String getSetterName() {
+        return "set" + capitalize(getPropertyName());
+    }
+
+    /**
+     * @return the name of the get method in the OpenWireType that handles this property.
+     */
+    public String getGetterName() {
+        return "get" + capitalize(getPropertyName());
+    }
+
+    private static String capitalize(final String value) {
+        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+    }
+
+    private static boolean isThrowable(Class<?> type) {
+        if (type.getCanonicalName().equals(Throwable.class.getName())) {
+            return true;
+        }
+
+        return type.getSuperclass() != null && isThrowable(type.getSuperclass());
     }
 }
