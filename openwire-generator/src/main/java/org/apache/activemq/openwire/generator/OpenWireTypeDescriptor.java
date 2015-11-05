@@ -77,7 +77,7 @@ public class OpenWireTypeDescriptor {
             superClass = Object.class;
         }
 
-        return superClass.getName();
+        return superClass.getSimpleName();
     }
 
     /**
