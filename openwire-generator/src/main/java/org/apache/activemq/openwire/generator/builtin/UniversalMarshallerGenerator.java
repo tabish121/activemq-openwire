@@ -38,7 +38,8 @@ public class UniversalMarshallerGenerator implements Generator {
 
     private static final Logger LOG = LoggerFactory.getLogger(UniversalMarshallerGenerator.class);
 
-    private final String codecPackage = "org.apache.activemq.openwire.codec.universal";
+    private final String codecBase = "org.apache.activemq.openwire.codec";
+    private final String codecPackage = codecBase + ".universal";
 
     private String baseDir;
 
@@ -68,6 +69,13 @@ public class UniversalMarshallerGenerator implements Generator {
     @Override
     public void setBaseDir(String baseDir) {
         this.baseDir = baseDir;
+    }
+
+    /**
+     * @return the base codec package name where the OpenWire marshalers support code lives.
+     */
+    public String getCodecPackageBase() {
+        return codecBase;
     }
 
     /**
@@ -109,7 +117,7 @@ public class UniversalMarshallerGenerator implements Generator {
         out.println("import java.io.DataOutput;");
         out.println("import java.io.IOException;");
         out.println("");
-        out.println("import " + getCodecPackage() + ".*;");
+        out.println("import " + getCodecPackageBase() + ".*;");
         out.println("import " + openWireType.getPackageName() + ".*;");
         out.println("");
     }
@@ -185,7 +193,7 @@ public class UniversalMarshallerGenerator implements Generator {
             String indent = "        ";
             if (property.getVersion() > 1) {
                 indent = indent + "    ";
-                out.println("        if (wireVersion >= " + property.getVersion() + ") {");
+                out.println("        if (version >= " + property.getVersion() + ") {");
             }
 
             if (property.isArray() && !typeName.equals("byte[]")) {
@@ -293,7 +301,7 @@ public class UniversalMarshallerGenerator implements Generator {
             String indent = "        ";
             if (property.getVersion() > 1) {
                 indent = indent + "    ";
-                out.println("        if (wireVersion >= " + property.getVersion() + ") {");
+                out.println("        if (version >= " + property.getVersion() + ") {");
             }
 
             if (typeName.equals("boolean")) {
@@ -376,7 +384,7 @@ public class UniversalMarshallerGenerator implements Generator {
             String indent = "        ";
             if (property.getVersion() > 1) {
                 indent = indent + "    ";
-                out.println("        if (wireVersion >= " + property.getVersion() + ") {");
+                out.println("        if (version >= " + property.getVersion() + ") {");
             }
 
             if (typeName.equals("boolean")) {
@@ -441,7 +449,7 @@ public class UniversalMarshallerGenerator implements Generator {
         out.println("     * @throws IOException if an error occurs while writing the data");
         out.println("     */");
         out.println("    public void looseUnmarshal(OpenWireFormat wireFormat, Object target, DataInput dataIn) throws IOException {");
-        out.println("        super.looseUnmarshal(wireFormat, o, dataIn);");
+        out.println("        super.looseUnmarshal(wireFormat, target, dataIn);");
 
         if (openWireType.hasProperties()) {
             out.println("");
@@ -459,12 +467,12 @@ public class UniversalMarshallerGenerator implements Generator {
         for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
             final int size = property.getSize();
             final String typeName = property.getTypeName();
-            final String setter = "info." + property.getSetterName();
+            final String setter = property.getSetterName();
 
             String indent = "        ";
             if (property.getVersion() > 1) {
                 indent = indent + "    ";
-                out.println("        if (wireVersion >= " + property.getVersion() + ") {");
+                out.println("        if (version >= " + property.getVersion() + ") {");
             }
 
             if (property.isArray() && !typeName.equals("byte[]")) {
@@ -555,7 +563,7 @@ public class UniversalMarshallerGenerator implements Generator {
             out.println("        info.beforeMarshall(wireFormat);");
         }
 
-        out.println("        super.looseMarshal(wireFormat, o, dataOut);");
+        out.println("        super.looseMarshal(wireFormat, source, dataOut);");
 
         for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
             final int size = property.getSize();
@@ -565,7 +573,7 @@ public class UniversalMarshallerGenerator implements Generator {
             String indent = "        ";
             if (property.getVersion() > 1) {
                 indent = indent + "    ";
-                out.println("        if (wireVersion >= " + property.getVersion() + ") {");
+                out.println("        if (version >= " + property.getVersion() + ") {");
             }
 
             if (typeName.equals("boolean")) {

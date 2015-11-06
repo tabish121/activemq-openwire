@@ -108,7 +108,11 @@ public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDe
      * @return the name of the get method in the OpenWireType that handles this property.
      */
     public String getGetterName() {
-        return "get" + capitalize(getPropertyName());
+        if (getType().equals(boolean.class)) {
+            return "is" + capitalize(getPropertyName());
+        } else {
+            return "get" + capitalize(getPropertyName());
+        }
     }
 
     private static String capitalize(final String value) {

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.actuvenq.openwire.generator;
+package org.apache.activenq.openwire.generator;
 
 import org.apache.activemq.openwire.generator.GeneratorTask;
 
@@ -27,7 +27,7 @@ public class IDERunner {
 
         GeneratorTask task = new GeneratorTask();
 
-        task.setBaseDir("./target/src/main/java");
+        task.setBaseDir("./target/generated-sources/openwire");
 
         task.execute();
     }
