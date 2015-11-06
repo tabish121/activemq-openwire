@@ -21,7 +21,9 @@ import static org.apache.activemq.openwire.generator.GeneratorUtils.writeApacheL
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.activemq.openwire.generator.Generator;
 import org.apache.activemq.openwire.generator.GeneratorUtils;
@@ -113,6 +115,19 @@ public class UniversalMarshallerGenerator implements Generator {
     private void writePreamble(PrintWriter out, OpenWireTypeDescriptor openWireType) {
         out.println("package " + getCodecPackage() + ";");
         out.println("");
+
+        Set<String> languageTypes = new HashSet<String>();
+
+        for (final OpenWirePropertyDescriptor property : openWireType.getProperties()) {
+            final Class<?> type = property.getType();
+            if (type.getCanonicalName().startsWith("java.util")) {
+                languageTypes.add(type.getCanonicalName());
+            }
+        }
+
+        for (String languageType : languageTypes) {
+            out.println("import " + languageType + ";");
+        }
         out.println("import java.io.DataInput;");
         out.println("import java.io.DataOutput;");
         out.println("import java.io.IOException;");
