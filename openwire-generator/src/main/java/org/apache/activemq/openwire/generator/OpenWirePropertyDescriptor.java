@@ -26,10 +26,12 @@ import org.apache.activemq.openwire.annotations.OpenWireProperty;
  */
 public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDescriptor> {
 
+    private final Class<?> openWireType;
     private final Field openWireProperty;
     private final OpenWireProperty propertyAnnotation;
 
-    public OpenWirePropertyDescriptor(Field openWireProperty) {
+    public OpenWirePropertyDescriptor(Class<?> openWireType, Field openWireProperty) {
+        this.openWireType = openWireType;
         this.openWireProperty = openWireProperty;
         this.propertyAnnotation = openWireProperty.getAnnotation(OpenWireProperty.class);
     }

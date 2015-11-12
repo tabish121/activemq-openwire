@@ -44,7 +44,7 @@ public class OpenWireTypeDescriptor {
         for (Field field : fields) {
             // Only track fields from the given type and not its super types.
             if (field.getDeclaringClass().equals(openWireType)) {
-                properties.add(new OpenWirePropertyDescriptor(field));
+                properties.add(new OpenWirePropertyDescriptor(openWireType, field));
             }
         }
 
