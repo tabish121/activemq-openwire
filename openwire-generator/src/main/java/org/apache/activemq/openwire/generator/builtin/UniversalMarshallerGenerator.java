@@ -122,6 +122,8 @@ public class UniversalMarshallerGenerator implements Generator {
             final Class<?> type = property.getType();
             if (type.getCanonicalName().startsWith("java.util")) {
                 languageTypes.add(type.getCanonicalName());
+            } else if (type.getCanonicalName().startsWith("org.fusesource.")) {
+                languageTypes.add(type.getCanonicalName());
             }
         }
 
@@ -264,10 +266,10 @@ public class UniversalMarshallerGenerator implements Generator {
                 } else {
                     out.println(indent + "info." + setter + "((" + property.getTypeName() + ") tightUnmarsalNestedObject(wireFormat, dataIn, bs));");
                 }
+            }
 
-                if (property.getVersion() > 1) {
-                    out.println("        }");
-                }
+            if (property.getVersion() > 1) {
+                out.println("        }");
             }
         }
 

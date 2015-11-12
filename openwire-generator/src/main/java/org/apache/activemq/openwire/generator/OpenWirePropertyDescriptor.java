@@ -1,4 +1,9 @@
 /*
+        if (getType().equals(boolean.class)) {
+            return "is" + capitalize(getPropertyName());
+        } else {
+            return "get" + capitalize(getPropertyName());
+        }
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -30,10 +35,16 @@ public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDe
     private final Field openWireProperty;
     private final OpenWireProperty propertyAnnotation;
 
-    public OpenWirePropertyDescriptor(Class<?> openWireType, Field openWireProperty) {
+    private final String getterName;
+    private final String setterName;
+
+    public OpenWirePropertyDescriptor(Class<?> openWireType, Field openWireProperty) throws Exception {
         this.openWireType = openWireType;
         this.openWireProperty = openWireProperty;
         this.propertyAnnotation = openWireProperty.getAnnotation(OpenWireProperty.class);
+
+        this.setterName = GeneratorUtils.findSetMethodForProperty(this.openWireType, this).getName();
+        this.getterName = GeneratorUtils.findGetMethodForProperty(this.openWireType, this).getName();
     }
 
     /**
@@ -103,22 +114,14 @@ public class OpenWirePropertyDescriptor implements Comparable<OpenWirePropertyDe
      * @return the name of the set method in the OpenWireType that handles this property.
      */
     public String getSetterName() {
-        return "set" + capitalize(getPropertyName());
+        return setterName;
     }
 
     /**
      * @return the name of the get method in the OpenWireType that handles this property.
      */
     public String getGetterName() {
-        if (getType().equals(boolean.class)) {
-            return "is" + capitalize(getPropertyName());
-        } else {
-            return "get" + capitalize(getPropertyName());
-        }
-    }
-
-    private static String capitalize(final String value) {
-        return Character.toUpperCase(value.charAt(0)) + value.substring(1);
+        return getterName;
     }
 
     private static boolean isThrowable(Class<?> type) {

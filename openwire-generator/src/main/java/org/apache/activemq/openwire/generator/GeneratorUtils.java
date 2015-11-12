@@ -16,15 +16,24 @@
  */
 package org.apache.activemq.openwire.generator;
 
+import static org.reflections.ReflectionUtils.getAllMethods;
+import static org.reflections.ReflectionUtils.withModifier;
+import static org.reflections.ReflectionUtils.withParametersCount;
+import static org.reflections.ReflectionUtils.withPrefix;
+
 import java.io.File;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 import org.apache.activemq.openwire.annotations.OpenWireProperty;
 import org.apache.activemq.openwire.annotations.OpenWireType;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
+
+import com.google.common.base.Predicates;
 
 /**
  * Collection of useful methods when generating OpenWire types.
@@ -67,6 +76,91 @@ public class GeneratorUtils {
             ReflectionUtils.getAllFields(openWireType, ReflectionUtils.withAnnotation(OpenWireProperty.class));
 
         return properties;
+    }
+
+    /**
+     * Attempt to locate the get method for the given property contained in the target OpenWire
+     * type.
+     *
+     * @param openWireType
+     *      The OpenWire type to search.
+     * @param property
+     *      The property whose get method must be located.
+     *
+     * @return the name of the get method for the given property.
+     *
+     * @throws Exception if an error occurs finding the get method.
+     */
+    @SuppressWarnings("unchecked")
+    public static Method findGetMethodForProperty(Class<?> openWireType, OpenWirePropertyDescriptor property) throws Exception {
+
+        if (property.getType().equals(boolean.class)) {
+            Set<Method> getters = getAllMethods(openWireType,
+                Predicates.and(
+                        withModifier(Modifier.PUBLIC),
+                        withPrefix("is"),
+                        withParametersCount(0)));
+
+            // Found an isX method, use that.
+            if (!getters.isEmpty()) {
+                for (Method method : getters) {
+                    if (method.getName().equalsIgnoreCase("is" + property.getPropertyName())) {
+                        return method;
+                    }
+                }
+            }
+        }
+
+        Set<Method> getters = getAllMethods(openWireType,
+            Predicates.and(
+                    withModifier(Modifier.PUBLIC),
+                    withPrefix("get"),
+                    withParametersCount(0)));
+
+        // Found an getX method, use that.
+        if (!getters.isEmpty()) {
+            for (Method method : getters) {
+                if (method.getName().equalsIgnoreCase("get" + property.getPropertyName())) {
+                    return method;
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Property class has invalid bean method names.");
+    }
+
+    /**
+     * Attempt to locate the set method for the given property contained in the target OpenWire
+     * type.
+     *
+     * @param openWireType
+     *      The OpenWire type to search.
+     * @param property
+     *      The property whose set method must be located.
+     *
+     * @return the name of the set method for the given property.
+     *
+     * @throws Exception if an error occurs finding the set method.
+     */
+    @SuppressWarnings("unchecked")
+    public static Method findSetMethodForProperty(Class<?> openWireType, OpenWirePropertyDescriptor property) throws Exception {
+
+        Set<Method> setters = getAllMethods(openWireType,
+            Predicates.and(
+                    withModifier(Modifier.PUBLIC),
+                    withPrefix("set"),
+                    withParametersCount(1)));
+
+        // Found an getX method, use that.
+        if (!setters.isEmpty()) {
+            for (Method method : setters) {
+                if (method.getName().equalsIgnoreCase("set" + property.getPropertyName())) {
+                    return method;
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("Property class has invalid bean method names.");
     }
 
     /**
@@ -115,5 +209,29 @@ public class GeneratorUtils {
         out.println(" * See the License for the specific language governing permissions and");
         out.println(" * limitations under the License.");
         out.println(" */");
+    }
+
+    /**
+     * Returns the capitalize version of the given string.  If the string is empty, does
+     * not start with a letter, or is the first letter is already upper case then the
+     * original String is returned.
+     *
+     * @param value
+     *      The String value to capitalize.
+     *
+     * @return the given value with the first letter capitalized.
+     */
+    public static String capitalize(final String value) {
+        if (value == null || value.isEmpty()) {
+            return value;
+        }
+
+        char entry = value.charAt(0);
+
+        if (!Character.isLetter(entry) || Character.isUpperCase(entry)) {
+            return value;
+        }
+
+        return Character.toUpperCase(entry) + value.substring(1);
     }
 }

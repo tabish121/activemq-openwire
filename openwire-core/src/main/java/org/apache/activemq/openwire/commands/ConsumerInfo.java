@@ -19,8 +19,9 @@ package org.apache.activemq.openwire.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.activemq.openwire.annotations.OpenWireType;
+import org.apache.activemq.openwire.annotations.OpenWireExtension;
 import org.apache.activemq.openwire.annotations.OpenWireProperty;
+import org.apache.activemq.openwire.annotations.OpenWireType;
 
 /**
  * @openwire:marshaller code="5"
@@ -90,6 +91,9 @@ public class ConsumerInfo extends BaseCommand {
     protected boolean noRangeAcks;
 
     @OpenWireProperty(version = 4, sequence = 19, serialized = false)
+    protected transient ConsumerId[] networkConsumerPath;
+
+    @OpenWireExtension(serialized = false)
     protected transient List<ConsumerId> networkConsumerIds;
 
     public ConsumerInfo() {
@@ -126,6 +130,12 @@ public class ConsumerInfo extends BaseCommand {
         info.priority = priority;
         info.brokerPath = brokerPath;
         info.networkSubscription = networkSubscription;
+        if (networkConsumerIds != null) {
+            if (info.networkConsumerIds == null) {
+                info.networkConsumerIds = new ArrayList<ConsumerId>();
+            }
+            info.networkConsumerIds.addAll(networkConsumerIds);
+        }
     }
 
     public boolean isDurable() {
