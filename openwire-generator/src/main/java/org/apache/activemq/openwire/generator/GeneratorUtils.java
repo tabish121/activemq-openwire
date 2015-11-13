@@ -22,7 +22,6 @@ import static org.reflections.ReflectionUtils.withParametersCount;
 import static org.reflections.ReflectionUtils.withPrefix;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -184,31 +183,6 @@ public class GeneratorUtils {
         }
 
         return outputFolder;
-    }
-
-    /**
-     * Writes the common Apache 2.0 license used in all generated source content.
-     *
-     * @param out
-     *      A PrintWriter instance to write the license to.
-     */
-    public static void writeApacheLicense(PrintWriter out) {
-        out.println("/*");
-        out.println(" * Licensed to the Apache Software Foundation (ASF) under one or more");
-        out.println(" * contributor license agreements.  See the NOTICE file distributed with");
-        out.println(" * this work for additional information regarding copyright ownership.");
-        out.println(" * The ASF licenses this file to You under the Apache License, Version 2.0");
-        out.println(" * (the \"License\"); you may not use this file except in compliance with");
-        out.println(" * the License.  You may obtain a copy of the License at");
-        out.println(" *");
-        out.println(" * http://www.apache.org/licenses/LICENSE-2.0");
-        out.println(" *");
-        out.println(" * Unless required by applicable law or agreed to in writing, software");
-        out.println(" * distributed under the License is distributed on an \"AS IS\" BASIS,");
-        out.println(" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.");
-        out.println(" * See the License for the specific language governing permissions and");
-        out.println(" * limitations under the License.");
-        out.println(" */");
     }
 
     /**

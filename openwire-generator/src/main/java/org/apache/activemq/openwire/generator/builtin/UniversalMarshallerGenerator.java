@@ -16,8 +16,6 @@
  */
 package org.apache.activemq.openwire.generator.builtin;
 
-import static org.apache.activemq.openwire.generator.GeneratorUtils.writeApacheLicense;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -25,7 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.activemq.openwire.generator.Generator;
+import org.apache.activemq.openwire.generator.AbstractGenerator;
 import org.apache.activemq.openwire.generator.GeneratorUtils;
 import org.apache.activemq.openwire.generator.OpenWirePropertyDescriptor;
 import org.apache.activemq.openwire.generator.OpenWireTypeDescriptor;
@@ -36,14 +34,12 @@ import org.slf4j.LoggerFactory;
  * Generator that create a set of OpenWire command marshalers that can
  * handle all OpenWire versions.
  */
-public class UniversalMarshallerGenerator implements Generator {
+public class UniversalMarshallerGenerator extends AbstractGenerator {
 
     private static final Logger LOG = LoggerFactory.getLogger(UniversalMarshallerGenerator.class);
 
     private final String codecBase = "org.apache.activemq.openwire.codec";
     private final String codecPackage = codecBase + ".universal";
-
-    private String baseDir;
 
     @Override
     public void run(List<OpenWireTypeDescriptor> typeDescriptors) throws Exception {
@@ -54,23 +50,6 @@ public class UniversalMarshallerGenerator implements Generator {
             LOG.debug("Generating marshaller for type: {}", openWireType.getTypeName());
             processClass(openWireType, outputFolder);
         }
-    }
-
-    /**
-     * @return the baseDir where the generator should operate.
-     */
-    @Override
-    public String getBaseDir() {
-        return baseDir;
-    }
-
-    /**
-     * @param baseDir
-     *      the base directory to use as the root of the generation process.
-     */
-    @Override
-    public void setBaseDir(String baseDir) {
-        this.baseDir = baseDir;
     }
 
     /**

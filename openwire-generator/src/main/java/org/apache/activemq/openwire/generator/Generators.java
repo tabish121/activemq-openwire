@@ -19,6 +19,7 @@ package org.apache.activemq.openwire.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.activemq.openwire.generator.builtin.UniversalMarshallerFactoryGenerator;
 import org.apache.activemq.openwire.generator.builtin.UniversalMarshallerGenerator;
 
 /**
@@ -30,5 +31,6 @@ public class Generators {
 
     static {
         BUILTIN.add(new UniversalMarshallerGenerator());
+        BUILTIN.add(new UniversalMarshallerFactoryGenerator());
     }
 }
