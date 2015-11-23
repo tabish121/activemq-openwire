@@ -38,6 +38,7 @@
     <target-version>1.7</target-version>
 
     <!-- Dependency Versions for this Project -->
+    <ant-version>1.6.2</ant-version>
     <junit-version>4.12</junit-version>
     <slf4j-version>1.7.12</slf4j-version>
     <hawtbuf-version>1.11</hawtbuf-version>
@@ -153,10 +154,10 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-          <groupId>org.mockito</groupId>
-          <artifactId>mockito-all</artifactId>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-all</artifactId>
         <version>${mockito-version}</version>
-          <scope>test</scope>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -172,6 +173,11 @@
         <groupId>org.fusesource.hawtbuf</groupId>
         <artifactId>hawtbuf</artifactId>
         <version>${hawtbuf-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ant</groupId>
+        <artifactId>ant</artifactId>
+        <version>${ant-version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>

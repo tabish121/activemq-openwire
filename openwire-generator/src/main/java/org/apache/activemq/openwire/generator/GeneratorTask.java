@@ -20,13 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * The main task that controls the OpenWire code generation routines.
  */
-public class GeneratorTask {
+public class GeneratorTask extends Task {
 
     private static final Logger LOG = LoggerFactory.getLogger(GeneratorTask.class);
 
@@ -34,7 +37,11 @@ public class GeneratorTask {
 
     public static void main(String[] args) {
 
+        Project project = new Project();
+        project.init();
+
         GeneratorTask generator = new GeneratorTask();
+        generator.setProject(project);
 
         try {
             if (args.length >= 1) {
@@ -50,29 +57,35 @@ public class GeneratorTask {
 
     //----- Perform the generation by finding generators ---------------------//
 
-    public void execute() throws Exception {
+    @Override
+    public void execute() throws BuildException {
+
         LOG.info("===========================================================");
         LOG.info("Running OpenWire Generator");
         LOG.info("===========================================================");
         LOG.info("Base Diractory = {}", getBaseDir());
 
-        List<OpenWireTypeDescriptor> descriptors = new ArrayList<OpenWireTypeDescriptor>();
+        try {
+            List<OpenWireTypeDescriptor> descriptors = new ArrayList<OpenWireTypeDescriptor>();
 
-        Set<Class<?>> openWireTypes = GeneratorUtils.findOpenWireTypes();
-        for (Class<?> openWireType : openWireTypes) {
-            LOG.trace("Found OpenWire Type: {}", openWireType.getSimpleName());
-            descriptors.add(new OpenWireTypeDescriptor(openWireType));
+            Set<Class<?>> openWireTypes = GeneratorUtils.findOpenWireTypes();
+            for (Class<?> openWireType : openWireTypes) {
+                LOG.trace("Found OpenWire Type: {}", openWireType.getSimpleName());
+                descriptors.add(new OpenWireTypeDescriptor(openWireType));
+            }
+
+            List<Generator> generators = getOpenWireGenerators();
+
+            for (Generator generator : generators) {
+                generator.setBaseDir(getBaseDir());
+
+                generator.run(descriptors);
+            }
+        } catch (Exception ex) {
+            throw new BuildException(ex);
+        } finally {
+            LOG.info("===========================================================");
         }
-
-        List<Generator> generators = getOpenWireGenerators();
-
-        for (Generator generator : generators) {
-            generator.setBaseDir(getBaseDir());
-
-            generator.run(descriptors);
-        }
-
-        LOG.info("===========================================================");
     }
 
     /**
