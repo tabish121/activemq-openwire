@@ -36,8 +36,12 @@
 
   <dependencies>
     <!-- =================================== -->
-    <!-- Required Dependencies                -->
+    <!-- Required Dependencies               -->
     <!-- =================================== -->
+    <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>openwire-annotations</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>

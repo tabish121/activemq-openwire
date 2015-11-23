@@ -110,21 +110,20 @@
     <module>openwire-legacy</module>
     <module>openwire-interop-tests</module>
     <module>openwire-website</module>
+    <module>openwire-annotations</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>org.apache.activemq</groupId>
-        <artifactId>openwire-core</artifactId>
+        <artifactId>openwire-annotations</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.activemq</groupId>
         <artifactId>openwire-core</artifactId>
         <version>${project.version}</version>
-        <scope>test</scope>
-        <type>test-jar</type>
       </dependency>
       <dependency>
         <groupId>org.apache.activemq</groupId>
