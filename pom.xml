@@ -38,9 +38,9 @@
     <target-version>1.7</target-version>
 
     <!-- Dependency Versions for this Project -->
-    <ant-version>1.6.5</ant-version>
+    <ant-version>1.9.6</ant-version>
     <junit-version>4.12</junit-version>
-    <slf4j-version>1.7.12</slf4j-version>
+    <slf4j-version>1.7.13</slf4j-version>
     <hawtbuf-version>1.11</hawtbuf-version>
     <activemq-version>5.12.1</activemq-version>
     <jetty-version>8.1.15.v20140411</jetty-version>
@@ -178,7 +178,7 @@
       <dependency>
         <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
-        <version>1.9.3</version>
+        <version>${ant-version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
