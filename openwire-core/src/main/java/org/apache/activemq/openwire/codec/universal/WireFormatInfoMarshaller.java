@@ -66,7 +66,7 @@ public class WireFormatInfoMarshaller extends BaseDataStreamMarshaller {
         info.beforeUnmarshall(wireFormat);
         info.setMagic(tightUnmarshalConstByteArray(dataIn, bs, 8));
         info.setVersion(dataIn.readInt());
-        info.setMarshalledProperties((Buffer) tightUnmarsalNestedObject(wireFormat, dataIn, bs));
+        info.setMarshalledProperties(tightUnmarshalByteSequence(dataIn, bs));
 
         info.afterUnmarshall(wireFormat);
     }
@@ -87,7 +87,7 @@ public class WireFormatInfoMarshaller extends BaseDataStreamMarshaller {
 
         int rc = super.tightMarshal1(wireFormat, source, bs);
         rc += tightMarshalConstByteArray1(info.getMagic(), bs, 8);
-        rc += tightMarshalNestedObject1(wireFormat, (DataStructure)info.getMarshalledProperties(), bs);
+        rc += tightMarshalByteSequence1(info.getMarshalledProperties(), bs);
 
         return rc + 4;
     }
@@ -109,7 +109,7 @@ public class WireFormatInfoMarshaller extends BaseDataStreamMarshaller {
 
         tightMarshalConstByteArray2(info.getMagic(), dataOut, bs, 8);
         dataOut.writeInt(info.getVersion());
-        tightMarshalNestedObject2(wireFormat, (DataStructure)info.getMarshalledProperties(), dataOut, bs);
+        tightMarshalByteSequence2(info.getMarshalledProperties(), dataOut, bs);
 
         info.afterMarshall(wireFormat);
     }
@@ -126,7 +126,7 @@ public class WireFormatInfoMarshaller extends BaseDataStreamMarshaller {
         super.looseMarshal(wireFormat, source, dataOut);
         looseMarshalConstByteArray(wireFormat, info.getMagic(), dataOut, 8);
         dataOut.writeInt(info.getVersion());
-        looseMarshalNestedObject(wireFormat, (DataStructure)info.getMarshalledProperties(), dataOut);
+        looseMarshalByteSequence(wireFormat, info.getMarshalledProperties(), dataOut);
 
         info.afterMarshall(wireFormat);
     }
@@ -147,7 +147,7 @@ public class WireFormatInfoMarshaller extends BaseDataStreamMarshaller {
         info.beforeUnmarshall(wireFormat);
         info.setMagic(looseUnmarshalConstByteArray(dataIn, 8));
         info.setVersion(dataIn.readInt());
-        info.setMarshalledProperties((Buffer) looseUnmarsalNestedObject(wireFormat, dataIn));
+        info.setMarshalledProperties(looseUnmarshalByteSequence(dataIn));
 
         info.afterUnmarshall(wireFormat);
     }

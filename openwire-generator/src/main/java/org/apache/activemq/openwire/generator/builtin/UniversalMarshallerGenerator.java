@@ -236,7 +236,7 @@ public class UniversalMarshallerGenerator extends AbstractGenerator {
                     } else {
                         out.println(indent + "info." + setter + "(tightUnmarshalByteArray(dataIn, bs));");
                     }
-                } else if (typeName.equals("ByteSequence")) {
+                } else if (typeName.equals("Buffer")) {
                     out.println(indent + "info." + setter + "(tightUnmarshalByteSequence(dataIn, bs));");
                 } else if (property.isThrowable()) {
                     out.println(indent + "info." + setter + "((" + property.getTypeName() + ") tightUnmarsalThrowable(wireFormat, dataIn, bs));");
@@ -320,7 +320,7 @@ public class UniversalMarshallerGenerator extends AbstractGenerator {
                 } else {
                     out.println(indent + "rc += tightMarshalByteArray1(" + getter + ", bs);");
                 }
-            } else if (typeName.equals("ByteSequence")) {
+            } else if (typeName.equals("Buffer")) {
                 out.println(indent + "rc += tightMarshalByteSequence1(" + getter + ", bs);");
             } else if (property.isArray()) {
                 if (size > 0) {
@@ -403,7 +403,7 @@ public class UniversalMarshallerGenerator extends AbstractGenerator {
                 } else {
                     out.println(indent + "tightMarshalByteArray2(" + getter + ", dataOut, bs);");
                 }
-            } else if (typeName.equals("ByteSequence")) {
+            } else if (typeName.equals("Buffer")) {
                 out.println(indent + "tightMarshalByteSequence2(" + getter + ", dataOut, bs);");
             } else if (property.isArray()) {
                 if (size > 0) {
@@ -515,7 +515,7 @@ public class UniversalMarshallerGenerator extends AbstractGenerator {
                     } else {
                         out.println(indent + "info." + setter + "(looseUnmarshalByteArray(dataIn));");
                     }
-                } else if (typeName.equals("ByteSequence")) {
+                } else if (typeName.equals("Buffer")) {
                     out.println(indent + "info." + setter + "(looseUnmarshalByteSequence(dataIn));");
                 } else if (property.isThrowable()) {
                     out.println(indent + "info." + setter + "((" + typeName + ") looseUnmarsalThrowable(wireFormat, dataIn));");
@@ -592,7 +592,7 @@ public class UniversalMarshallerGenerator extends AbstractGenerator {
                 } else {
                     out.println(indent + "looseMarshalByteArray(wireFormat, " + getter + ", dataOut);");
                 }
-            } else if (typeName.equals("ByteSequence")) {
+            } else if (typeName.equals("Buffer")) {
                 out.println(indent + "looseMarshalByteSequence(wireFormat, " + getter + ", dataOut);");
             } else if (property.isArray()) {
                 if (size > 0) {

@@ -64,8 +64,8 @@ public abstract class MessageMarshaller extends BaseCommandMarshaller {
         info.setReplyTo((OpenWireDestination) tightUnmarsalNestedObject(wireFormat, dataIn, bs));
         info.setTimestamp(tightUnmarshalLong(wireFormat, dataIn, bs));
         info.setType(tightUnmarshalString(dataIn, bs));
-        info.setContent((Buffer) tightUnmarsalNestedObject(wireFormat, dataIn, bs));
-        info.setMarshalledProperties((Buffer) tightUnmarsalNestedObject(wireFormat, dataIn, bs));
+        info.setContent(tightUnmarshalByteSequence(dataIn, bs));
+        info.setMarshalledProperties(tightUnmarshalByteSequence(dataIn, bs));
         info.setDataStructure((DataStructure) tightUnmarsalNestedObject(wireFormat, dataIn, bs));
         info.setTargetConsumerId((ConsumerId) tightUnmarsalCachedObject(wireFormat, dataIn, bs));
         info.setCompressed(bs.readBoolean());
@@ -140,8 +140,8 @@ public abstract class MessageMarshaller extends BaseCommandMarshaller {
         rc += tightMarshalNestedObject1(wireFormat, (DataStructure)info.getReplyTo(), bs);
         rc += tightMarshalLong1(wireFormat, info.getTimestamp(), bs);
         rc += tightMarshalString1(info.getType(), bs);
-        rc += tightMarshalNestedObject1(wireFormat, (DataStructure)info.getContent(), bs);
-        rc += tightMarshalNestedObject1(wireFormat, (DataStructure)info.getMarshalledProperties(), bs);
+        rc += tightMarshalByteSequence1(info.getContent(), bs);
+        rc += tightMarshalByteSequence1(info.getMarshalledProperties(), bs);
         rc += tightMarshalNestedObject1(wireFormat, (DataStructure)info.getDataStructure(), bs);
         rc += tightMarshalCachedObject1(wireFormat, (DataStructure)info.getTargetConsumerId(), bs);
         bs.writeBoolean(info.isCompressed());
@@ -199,8 +199,8 @@ public abstract class MessageMarshaller extends BaseCommandMarshaller {
         tightMarshalNestedObject2(wireFormat, (DataStructure)info.getReplyTo(), dataOut, bs);
         tightMarshalLong2(wireFormat, info.getTimestamp(), dataOut, bs);
         tightMarshalString2(info.getType(), dataOut, bs);
-        tightMarshalNestedObject2(wireFormat, (DataStructure)info.getContent(), dataOut, bs);
-        tightMarshalNestedObject2(wireFormat, (DataStructure)info.getMarshalledProperties(), dataOut, bs);
+        tightMarshalByteSequence2(info.getContent(), dataOut, bs);
+        tightMarshalByteSequence2(info.getMarshalledProperties(), dataOut, bs);
         tightMarshalNestedObject2(wireFormat, (DataStructure)info.getDataStructure(), dataOut, bs);
         tightMarshalCachedObject2(wireFormat, (DataStructure)info.getTargetConsumerId(), dataOut, bs);
         bs.readBoolean();
@@ -254,8 +254,8 @@ public abstract class MessageMarshaller extends BaseCommandMarshaller {
         looseMarshalNestedObject(wireFormat, (DataStructure)info.getReplyTo(), dataOut);
         looseMarshalLong(wireFormat, info.getTimestamp(), dataOut);
         looseMarshalString(info.getType(), dataOut);
-        looseMarshalNestedObject(wireFormat, (DataStructure)info.getContent(), dataOut);
-        looseMarshalNestedObject(wireFormat, (DataStructure)info.getMarshalledProperties(), dataOut);
+        looseMarshalByteSequence(wireFormat, info.getContent(), dataOut);
+        looseMarshalByteSequence(wireFormat, info.getMarshalledProperties(), dataOut);
         looseMarshalNestedObject(wireFormat, (DataStructure)info.getDataStructure(), dataOut);
         looseMarshalCachedObject(wireFormat, (DataStructure)info.getTargetConsumerId(), dataOut);
         dataOut.writeBoolean(info.isCompressed());
@@ -313,8 +313,8 @@ public abstract class MessageMarshaller extends BaseCommandMarshaller {
         info.setReplyTo((OpenWireDestination) looseUnmarsalNestedObject(wireFormat, dataIn));
         info.setTimestamp(looseUnmarshalLong(wireFormat, dataIn));
         info.setType(looseUnmarshalString(dataIn));
-        info.setContent((Buffer) looseUnmarsalNestedObject(wireFormat, dataIn));
-        info.setMarshalledProperties((Buffer) looseUnmarsalNestedObject(wireFormat, dataIn));
+        info.setContent(looseUnmarshalByteSequence(dataIn));
+        info.setMarshalledProperties(looseUnmarshalByteSequence(dataIn));
         info.setDataStructure((DataStructure) looseUnmarsalNestedObject(wireFormat, dataIn));
         info.setTargetConsumerId((ConsumerId) looseUnmarsalCachedObject(wireFormat, dataIn));
         info.setCompressed(dataIn.readBoolean());
