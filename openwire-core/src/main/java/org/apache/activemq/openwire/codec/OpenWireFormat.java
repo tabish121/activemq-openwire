@@ -53,7 +53,7 @@ public final class OpenWireFormat {
     private boolean sizePrefixDisabled;
     private long maxFrameSize = DEFAULT_MAX_FRAME_SIZE;
 
-    private boolean useLegacyCodecs = true;
+    private boolean useLegacyCodecs = false;
 
     // The following fields are used for value caching
     private short nextMarshallCacheIndex;
@@ -534,8 +534,15 @@ public final class OpenWireFormat {
      * @param version
      */
     public void setVersion(int version) {
-        String mfName = "org.apache.activemq.openwire.codec.v" + version + ".MarshallerFactory";
+        String mfName = null;
         Class<?> mfClass;
+
+        if (!useLegacyCodecs) {
+            mfName = "org.apache.activemq.openwire.codec.universal.MarshallerFactory";
+        } else {
+            mfName = "org.apache.activemq.openwire.codec.v" + version + ".MarshallerFactory";
+        }
+
         try {
             mfClass = Class.forName(mfName, false, getClass().getClassLoader());
         } catch (ClassNotFoundException e) {

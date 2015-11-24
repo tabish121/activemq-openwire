@@ -38,7 +38,7 @@
     <target-version>1.7</target-version>
 
     <!-- Dependency Versions for this Project -->
-    <ant-version>1.6.2</ant-version>
+    <ant-version>1.6.5</ant-version>
     <junit-version>4.12</junit-version>
     <slf4j-version>1.7.12</slf4j-version>
     <hawtbuf-version>1.11</hawtbuf-version>
@@ -48,6 +48,7 @@
     <reflections-version>0.9.10</reflections-version>
 
     <!-- Maven Plugin Version for this Project -->
+    <maven-antrun-plugin-version>1.3</maven-antrun-plugin-version>
     <maven-surefire-plugin-version>2.18.1</maven-surefire-plugin-version>
     <maven-assembly-plugin-version>2.4</maven-assembly-plugin-version>
     <maven-release-plugin-version>2.4.1</maven-release-plugin-version>
@@ -138,9 +139,9 @@
       </dependency>
 
       <dependency>
-          <groupId>org.reflections</groupId>
-          <artifactId>reflections</artifactId>
-          <version>${reflections-version}</version>
+        <groupId>org.reflections</groupId>
+        <artifactId>reflections</artifactId>
+        <version>${reflections-version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
@@ -175,9 +176,9 @@
         <version>${hawtbuf-version}</version>
       </dependency>
       <dependency>
-        <groupId>ant</groupId>
+        <groupId>org.apache.ant</groupId>
         <artifactId>ant</artifactId>
-        <version>${ant-version}</version>
+        <version>1.9.3</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.plugins</groupId>
@@ -225,6 +226,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven-compiler-plugin-version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>${maven-antrun-plugin-version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
