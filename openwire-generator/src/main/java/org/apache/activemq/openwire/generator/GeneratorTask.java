@@ -70,7 +70,7 @@ public class GeneratorTask extends Task {
 
             Set<Class<?>> openWireTypes = GeneratorUtils.findOpenWireTypes();
             for (Class<?> openWireType : openWireTypes) {
-                LOG.trace("Found OpenWire Type: {}", openWireType.getSimpleName());
+                LOG.info("Found OpenWire Type: {}", openWireType.getSimpleName());
                 descriptors.add(new OpenWireTypeDescriptor(openWireType));
             }
 
